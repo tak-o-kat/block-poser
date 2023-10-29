@@ -8,14 +8,12 @@ const Header: Component = () => {
         <div class="sm:flex sm:items-center sm:justify-between">
           <div class="text-center sm:text-left">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 sm:text-3xl">
-              Welcome Back, Barry!
+              Block Poser!
             </h1>
-
             <p class="mt-1.5 text-sm text-gray-500">
-              Let's write a new blog post! 🎉
+              Lets find your blocks! 🎉
             </p>
           </div>
-
           <div class="mt-4 flex justify-center sm:mt-0 sm:text-center">
             <ThemeSwitcher />
           </div>
