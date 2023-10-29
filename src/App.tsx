@@ -1,13 +1,16 @@
 import type { Component } from 'solid-js';
 
 import Header from './Components/Header';
+import BlockSearchForm from './Components/BlockSearchForm';
 
 
 const App: Component = () => {
   return (
     <>
       <Header />
-      <p class="bg-white dark:bg-gray-800 text-content text-4xl text-center py-20">Hello tailwind!</p>
+      <div class="flex flex-row h-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
+          <BlockSearchForm />
+      </div>
     </>
   );
 };
