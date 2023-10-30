@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js';
 
-import Header from './Components/Header';
-import BlockSearchForm from './Components/BlockSearchForm';
+import Header from './components/Header';
+import BlockSearchForm from './components/BlockSearchForm';
 
 
 const App: Component = () => {

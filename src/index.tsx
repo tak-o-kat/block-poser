@@ -3,6 +3,7 @@ import './index.css';
 import { render } from 'solid-js/web';
 
 import App from './App';
+import { GlobalContextProvider } from './context/store';
 
 const root = document.getElementById('root');
 
@@ -12,4 +13,4 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   );
 }
 
-render(() => <App />, root!);
+render(() => <GlobalContextProvider><App /></GlobalContextProvider>, root!);
