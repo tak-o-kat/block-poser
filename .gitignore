@@ -7,6 +7,7 @@ coverage/
 types/
 .DS_Store
 .turbo/
+.env
 
 packages/solid/src/jsx.d.ts
 packages/solid/h/jsx-runtime/src/jsx.d.ts
