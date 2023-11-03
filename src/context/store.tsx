@@ -2,7 +2,12 @@ import { createStore } from "solid-js/store";
 import { createContext, useContext } from 'solid-js';
 
 const store = {
-  theme: null
+  searchResults: {
+    account: null,
+    accountBalance: 0,
+    blocksProposed: 0,
+  },
+  theme: null,
 }
 
 const GlobalContext = createContext();
