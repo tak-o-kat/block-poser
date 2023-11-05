@@ -27,15 +27,21 @@ const SolidDatePicker: Component = () => {
           <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
         </svg>
       </div>
-      <div class="mx-1 text-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ">
+      <div class="mx-1 text-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-solid">
         <DatePicker 
           value={startDate} 
           setValue={setStartDate}
-          weekStartDay={1}
           hideOutSideDays
           formatInputLabel="yyyy-mm-dd"
           inputClass={dateInputClasses}
-          inputWrapperClass="w"
+          datePickerWrapperClass="bg-gray-50 dark:bg-gray-700"
+          prevNextMonthBtnClass="text-gray-700 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600"
+          monthYearTriggerBtnClass="text-gray-700 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600"
+          monthYearSelectorWrapperClass="bg-gray-50 dark:bg-gray-700"
+          monthYearOptionBtnClass="text-gray-700 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600"
+          weekNamesClass="text-gray-50 dark:text-gray-400"
+          daysBtnClass="text-gray-700 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600"
+          currentDayBtnClass="!border-solid !border-gray-600"
         />
       </div>
     </div>
