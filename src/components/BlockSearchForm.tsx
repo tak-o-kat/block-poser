@@ -98,6 +98,7 @@ const BlockSearchForm: Component = () => {
           </div>
 
           <SolidDatePicker />
+          <SolidDatePicker />
 
           <div class="flex items-center justify-between">
             <button
