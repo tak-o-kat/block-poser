@@ -19,6 +19,8 @@
     "vite-plugin-solid": "^2.7.2"
   },
   "dependencies": {
+    "@rnwonder/solid-date-picker": "^0.8.0",
+    "algosdk": "^2.7.0",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "solid-js": "^1.8.4"

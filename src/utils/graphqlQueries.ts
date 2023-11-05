@@ -11,4 +11,5 @@ export const findBalance = gql`
 `;
 
 export const getBlockCount = gql`
+  
 `;

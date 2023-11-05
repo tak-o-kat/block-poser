@@ -2,10 +2,21 @@ import { createStore } from "solid-js/store";
 import { createContext, useContext } from 'solid-js';
 
 const store = {
-  searchResults: {
-    account: null,
-    accountBalance: 0,
-    blocksProposed: 0,
+  searchForm: {
+    fields: {
+      accountAddress: '',
+      govPeriod: '',
+    },
+    errors: {
+      accountAddress: {
+        error: false,
+        msg: '',
+      },
+      govPeriod: {
+        error: false,
+        msg: ''
+      }
+    },
   },
   theme: null,
 }
