@@ -17,7 +17,7 @@ const SolidDatePicker: Component = () => {
   });
 
   // tailwind CSS for date input
-  const dateInputClasses = "bg-gray-50 dark:bg-gray-700 outline-none h-8 cursor-pointer";
+  const dateInputClasses = "bg-gray-50 dark:bg-gray-700 outline-none h-12 !pl-11 cursor-pointer";
 
 
   return (
@@ -35,7 +35,7 @@ const SolidDatePicker: Component = () => {
           hideOutSideDays
           formatInputLabel="yyyy-mm-dd"
           inputClass={dateInputClasses}
-          inputWrapperClass="h-12"
+          inputWrapperClass=""
         />
       </div>
     </div>
