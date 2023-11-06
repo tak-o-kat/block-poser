@@ -11,9 +11,9 @@ const SolidTimePicker: Component = () => {
     value: {},
   });
 
-  const timeInputClasses = "bg-white dark:bg-gray-700 outline-none h-11 !pl-11 cursor-pointer";
-  const wrapperClass = "bg-gray-200 dark:bg-gray-700"
-  const btnClass = "text-gray-700 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600"
+  const timeInputClasses = "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 outline-none h-11 !pl-11 cursor-pointer";
+  const wrapperClass = "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100"
+  const btnClass = "text-gray-700 dark:text-gray-100"
 
   return (
     <div class="relative w-full border-2 rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 bg">
@@ -30,16 +30,9 @@ const SolidTimePicker: Component = () => {
           inputClass={timeInputClasses}
           timePickerWrapperClass={wrapperClass}
           prevNextTimeViewBtnClass={btnClass}
-          timeAnalogWrapperClass={wrapperClass}
+          timeAnalogWrapperClass="bg-gray-100 dark:bg-gray-800"
           timePickerMeridiemBtnClass={btnClass}
           timeAnalogNumberClass={btnClass}
-          timePickerTopAreaClass={btnClass}
-          timePickerBottomAreaClass={wrapperClass}
-          timeAnalogClockHandClass={btnClass}
-          inputWrapperClass={btnClass}
-          nextTimeViewBtnClass={btnClass}
-          prevTimeViewBtnClass={btnClass}
-          timeAnalogClockCenterDotClass={btnClass}
         />
       </div>
     </div>
