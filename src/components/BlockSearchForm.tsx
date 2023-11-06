@@ -5,7 +5,8 @@ import { useGlobalContext } from '../context/store';
 import { graphqlClient } from '../utils/graphqlClient';
 import { findBalance } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
-import SolidDatePicker from './DatePicker';
+import SolidDatePicker from './SolidDatePicker';
+import SolidTimePicker from './SolidTimePicker';
 
 
 const BlockSearchForm: Component = () => {
@@ -36,7 +37,7 @@ const BlockSearchForm: Component = () => {
   });
 
   return (
-    <section class="mx-auto w-full px-4 py-4 sm:px-8 sm:py-10">
+    <section class="mx-auto w-full px-4 py-4 sm:px-8 sm:py-10 text-gray-600 dark:text-gray-100">
       <div class="mx-auto sm:max-w-2xl pb-5 border-b border-gray-600">
         <div class="text-center">
           <h1 class="text-xl font-bold sm:text-3xl text-gray-600 dark:text-gray-100">Get Blocks!</h1>
@@ -97,9 +98,18 @@ const BlockSearchForm: Component = () => {
             </Show>
           </div>
 
-          <SolidDatePicker />
-          <SolidDatePicker />
+          <h4>Start Datetime</h4>
+          <div class='flex flex-row gap-4'>
+            <SolidDatePicker />
+            <SolidTimePicker />
+          </div>
+          <h4>End Datetime</h4>
+          <div class='flex flex-row gap-4'>
+            <SolidDatePicker />
+            <SolidTimePicker />
+          </div>
 
+          
           <div class="flex items-center justify-between">
             <button
               type="submit"
