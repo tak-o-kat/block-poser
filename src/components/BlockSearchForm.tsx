@@ -60,7 +60,7 @@ const BlockSearchForm: Component = () => {
                   }
                 )}
                 type="text"
-                class={`${store.state.searchForm.errors.accountAddress.error && 'border-red-500 dark:border-red-500'} border w-full rounded-lg p-3 pe-12 text-sm dark:bg-gray-700 border-gray-300 dark:border-gray-600`}
+                class={`${store.state.searchForm.errors.accountAddress.error && 'border-red-500 dark:border-red-500'} border w-full rounded-lg p-3 pe-12 text-sm dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none`}
                 placeholder="Node Address"
                 maxlength={58}
               />
