@@ -12,8 +12,8 @@ const SolidTimePicker: Component = () => {
   });
 
   const timeInputClasses = "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 outline-none h-11 !pl-11 cursor-pointer";
-  const wrapperClass = "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100"
-  const btnClass = "text-gray-700 dark:text-gray-100"
+  const wrapperClass = "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 font-bold"
+  const btnClass = "text-gray-700 dark:text-gray-100 font-bold"
 
   return (
     <div class="relative w-full border-2 rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 bg">
