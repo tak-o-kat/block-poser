@@ -1,11 +1,11 @@
-import { Component, createSignal } from 'solid-js';
+import { createSignal, createEffect } from 'solid-js';
 
 import {
   TimeValue,
   TimePicker,
 } from '@rnwonder/solid-date-picker';
 
-const SolidTimePicker: Component = () => {
+const SolidTimePicker = (props) => {
   const [time, setTime] = createSignal<TimeValue>({
     label: '',
     value: {},
@@ -14,6 +14,16 @@ const SolidTimePicker: Component = () => {
   const timeInputClasses = "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 outline-none h-11 !pl-11 cursor-pointer";
   const wrapperClass = "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 font-bold"
   const btnClass = "text-gray-700 dark:text-gray-100 font-bold"
+
+  createEffect(() => {
+    props.setState({
+      searchForm: {
+        fields: {
+          [props.fieldName]: time
+        }
+      }
+    });
+  });
 
   return (
     <div class="relative w-full border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 bg">

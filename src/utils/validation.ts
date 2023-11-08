@@ -56,6 +56,7 @@ const checkGovPeriod = (store: any): boolean => {
 
 export const errorsDetected = (store: any): boolean => {
   // run each check
+  debugger;
   const addressCheck = checkAccountAddress(store);
   const govPeriodCheck = checkGovPeriod(store);
 

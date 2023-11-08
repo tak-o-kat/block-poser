@@ -1,11 +1,11 @@
-import { Component, createSignal } from 'solid-js';
+import { createEffect, createSignal } from 'solid-js';
 
 import DatePicker, {
   PickerValue,
 } from '@rnwonder/solid-date-picker';
 
-const SolidDatePicker: Component = () => {
-  const [startDate, setStartDate] = createSignal<PickerValue>({
+const SolidDatePicker = (props: any) => {
+  const [date, setDate] = createSignal<PickerValue>({
     label: '',
     value: {},
   });
@@ -14,6 +14,18 @@ const SolidDatePicker: Component = () => {
   const dateInputClasses = "bg-white dark:bg-gray-700 outline-none h-11 !pl-11 cursor-pointer";
   const wrapperClass = "bg-gray-200 dark:bg-gray-700"
   const btnClass = "text-gray-700 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600"
+
+  const updateDate = () => {
+    debugger;
+    props.setState({
+      searchForm: {
+        fields: {
+          [props.fieldName]: date()
+        }
+      }
+    });
+  };
+
 
   return (
     <div class="relative w-full border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600">
@@ -25,10 +37,13 @@ const SolidDatePicker: Component = () => {
       <div class="mx-1 text-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-solid">
         <DatePicker
           placeholder='Select Date'
-          value={startDate} 
-          setValue={setStartDate}
+          value={date} 
+          setValue={setDate}
+          onChange={updateDate}
           hideOutSideDays
           formatInputLabel="yyyy-mm-dd"
+          shouldCloseOnSelect={true}
+          weekDaysType={"single"}
           inputClass={dateInputClasses}
           datePickerWrapperClass={wrapperClass}
           prevNextMonthBtnClass={btnClass}

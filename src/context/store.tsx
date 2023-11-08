@@ -6,6 +6,10 @@ const store = {
     fields: {
       accountAddress: '',
       govPeriod: '',
+      fromDate: '',
+      fromTime: '',
+      untilDate: '',
+      untilTime: '',
     },
     errors: {
       accountAddress: {
@@ -13,6 +17,22 @@ const store = {
         msg: '',
       },
       govPeriod: {
+        error: false,
+        msg: ''
+      },
+      fromDate: {
+        error: false,
+        msg: ''
+      },
+      fromTime: {
+        error: false,
+        msg: ''
+      },
+      untilDate: {
+        error: false,
+        msg: ''
+      },
+      untilTime: {
         error: false,
         msg: ''
       }

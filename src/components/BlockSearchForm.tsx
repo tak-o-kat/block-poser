@@ -43,8 +43,10 @@ const BlockSearchForm: Component = () => {
           <h1 class="text-xl font-bold sm:text-3xl text-gray-600 dark:text-gray-100">Get Blocks!</h1>
         </div>
         <form onSubmit={submit} class="sm:w-[36rem] mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
+          
+          
           <div>
-            <label class="sr-only">Node Address</label>
+            <label class="sr-only text-md">Node Address</label>
             <div>
               <input
                 value={store.state.searchForm.fields.accountAddress}
@@ -60,7 +62,7 @@ const BlockSearchForm: Component = () => {
                   }
                 )}
                 type="text"
-                class={`${store.state.searchForm.errors.accountAddress.error && 'border-red-500 dark:border-red-500'} border w-full rounded-lg p-3 pe-12 text-sm dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none`}
+                class={`${store.state.searchForm.errors.accountAddress.error && 'border-red-500 dark:border-red-500'} border w-full rounded-lg p-3 pe-12 dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none`}
                 placeholder="Node Address"
                 maxlength={58}
               />
@@ -87,7 +89,7 @@ const BlockSearchForm: Component = () => {
               )}
               id="period"
               aria-placeholder="Select a Period"
-              class={`${store.state.searchForm.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} border bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 h-12 w-full border-1 rounded-lg px-2 text-sm outline-0 outline-gray-100`}>
+              class={`${store.state.searchForm.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} border bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 h-12 w-full border-1 rounded-lg px-2 outline-0 outline-gray-100`}>
               <option disabled selected value='' aria-placeholder=''>Select a Period</option>
               <option value="g9">Gov - 9</option>
               <option value="g8">Gov - 8</option>
@@ -99,15 +101,27 @@ const BlockSearchForm: Component = () => {
             </Show>
           </div>
 
+          
           <h4>Start Datetime</h4>
           <div class='flex flex-row gap-4'>
-            <SolidDatePicker />
-            <SolidTimePicker />
+            <SolidDatePicker 
+              fieldName={"fromDate"}
+              setState={store.setState}
+            />
+            <SolidTimePicker 
+              fieldName={"untilTime"}
+              setState={store.setState}
+            />
           </div>
           <h4>End Datetime</h4>
           <div class='flex flex-row gap-4'>
-            <SolidDatePicker />
-            <SolidTimePicker />
+            <SolidDatePicker 
+              fieldName={"untilDate"}
+              setState={store.setState}/>
+            <SolidTimePicker 
+              fieldName={"untilTime"}
+              setState={store.setState}
+            />
           </div>
 
           
