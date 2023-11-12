@@ -1,9 +1,10 @@
 import { Show } from 'solid-js';
-import DatePicker, { utils } from '@rnwonder/solid-date-picker';
+import DatePicker, { utils, DateMath } from '@rnwonder/solid-date-picker';
 
 const SolidDatePicker = (props: any) => {
   const minDate = { year: 2019, month: 5, day: 11 };
-  const maxDate = utils().getToday();
+  const [year, month, day] = (new Date().toISOString().slice(0, 10)).split('-').map((n) => parseInt(n));
+  const maxDate = { year: year, month: month - 1, day: day };
 
   // tailwind CSS for datepicker 
   const dateInputClasses = "bg-white dark:bg-gray-700 outline-none h-11 !pl-11 cursor-pointer";
@@ -37,7 +38,7 @@ const SolidDatePicker = (props: any) => {
             monthYearOptionBtnClass={btnClass}
             weekNamesClass="text-gray-50 dark:text-gray-400"
             daysBtnClass={btnClass}
-            currentDayBtnClass="!border-solid !border-gray-400 !dark:border-gray-600"
+            currentDayBtnClass="!border-0"
           />
         </div>
       </div>

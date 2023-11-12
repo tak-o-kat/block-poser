@@ -1,4 +1,5 @@
-import { Component, Show, onMount } from 'solid-js';
+import { Component, Show, onMount, createSignal } from 'solid-js';
+import { PickerValue, TimeValue, utils, DateMath } from '@rnwonder/solid-date-picker';
 
 
 import { useGlobalContext } from '../context/store';
@@ -7,16 +8,86 @@ import { findBalance } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
 import SolidDatePicker from './SolidDatePicker';
 import SolidTimePicker from './SolidTimePicker';
+import { createStore } from 'solid-js/store';
 
 
 const BlockSearchForm: Component = () => {
   const store: any = useGlobalContext();
+  const gmtDate = new Date().toISOString().slice(0, 10);
+  const [year, month, day] = (gmtDate).split('-').map((n) => parseInt(n));
+  const currentTimeText = "Current Time (GMT)";
+  const [startDate, setStartDate] = createSignal<PickerValue>({
+    label: '',
+    value: {},
+  });
+  const [startTime, setStartTime] = createSignal<TimeValue>({
+    label: '',
+    value: {},
+  });
+  const [endDate, setEndDate] = createSignal<PickerValue>({
+    label: gmtDate,
+    value: {
+      selectedDateObject: { year: year, month: month - 1, day: day },
+    },
+  });
+  const [endTime, setEndTime] = createSignal<TimeValue>({
+    label: currentTimeText,
+    value: { hour: 0, minute: 0, second: 0},
+  });
+
+  const [formState, setFormState] = createStore({
+    fields: {
+      accountAddress: '',
+      govPeriod: '',
+      startDate: '',
+      startTime: '',
+      endDate: '',
+      endTime: '',
+    },
+    errors: {
+      accountAddress: {
+        error: false,
+        msg: '',
+      },
+      govPeriod: {
+        error: false,
+        msg: ''
+      },
+      startDate: {
+        error: false,
+        msg: ''
+      },
+      startTime: {
+        error: false,
+        msg: ''
+      },
+      endDate: {
+        error: false,
+        msg: ''
+      },
+      endTime: {
+        error: false,
+        msg: ''
+      }
+    },
+  });
 
   const submit = async (e: any) => {
     e.preventDefault();
+    // set date and time values into the form state
+    setFormState({
+      ...formState,
+      fields: {
+        ...formState.fields,
+        startDate: startDate().label,
+        startTime: startTime().label,
+        endDate: endDate().label,
+        endTime: endTime().label === currentTimeText ? new Date().toISOString().slice(11,19): endTime().label, // get GMT time if current time
+      }
+    })
 
     // Check if any field has errors
-    if (!errorsDetected(store)) {
+    if (!errorsDetected(formState, setFormState)) {
       // Set the graphql variables
       const variables = {
         //addy: field.address,
@@ -49,25 +120,21 @@ const BlockSearchForm: Component = () => {
             <label class="sr-only text-md">Node Address</label>
             <div>
               <input
-                value={store.state.searchForm.fields.accountAddress}
-                onChange={(e) => store.setState(
-                  { 
-                    searchForm: {
-                      ...store.state.searchForm,
-                      fields: {
-                        ...store.state.searchForm.fields,
-                        accountAddress: e.currentTarget.value,
-                      }
+                value={formState.fields.accountAddress}
+                onChange={(e) => setFormState({ 
+                    fields: {
+                      ...formState.fields,
+                      accountAddress: e.currentTarget.value,
                     }
-                  }
-                )}
+                  })
+                }
                 type="text"
-                class={`${store.state.searchForm.errors.accountAddress.error && 'border-red-500 dark:border-red-500'} border w-full rounded-lg p-3 pe-12 dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none`}
+                class={`${formState.errors.accountAddress.error && 'border-red-500 dark:border-red-500'} border w-full rounded-lg p-3 pe-12 dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none`}
                 placeholder="Node Address"
                 maxlength={58}
               />
-              <Show when={store.state.searchForm.errors.accountAddress.error}>
-                <span class="p-1 text-sm text-red-600">{store.state.searchForm.errors.accountAddress.msg}</span>
+              <Show when={formState.errors.accountAddress.error}>
+                <span class="p-1 text-sm text-red-600">{formState.errors.accountAddress.msg}</span>
               </Show>
             </div>
           </div>
@@ -75,52 +142,52 @@ const BlockSearchForm: Component = () => {
 
           <div>
             <select
-              value={store.state.searchForm.fields.govPeriod}
-              onChange={(e) => store.setState(
-                { 
-                  searchForm: {
-                    ...store.state.searchForm,
-                    fields: {
-                      ...store.state.searchForm.fields,
-                      govPeriod: e.currentTarget.value,
-                    }
-                  }
+              value={formState.fields.govPeriod}
+              onChange={(e) => store.setState({
+                fields: {
+                  ...formState.fields,
+                  govPeriod: e.currentTarget.value,
                 }
-              )}
+              })}
               id="period"
               aria-placeholder="Select a Period"
-              class={`${store.state.searchForm.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} border bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 h-12 w-full border-1 rounded-lg px-2 outline-0 outline-gray-100`}>
+              class={`${formState.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} border bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 h-12 w-full border-1 rounded-lg px-2 outline-0 outline-gray-100`}>
               <option disabled selected value='' aria-placeholder=''>Select a Period</option>
               <option value="g9">Gov - 9</option>
               <option value="g8">Gov - 8</option>
               <option value="g7">Gov - 7</option>
               <option value="g6">Gov - 6</option>
             </select>
-            <Show when={store.state.searchForm.errors.govPeriod.error}>
-              <span class="p-1 text-sm text-red-600">{store.state.searchForm.errors.govPeriod.msg}</span>
+            <Show when={formState.errors.govPeriod.error}>
+              <span class="p-1 text-sm text-red-600">{formState.errors.govPeriod.msg}</span>
             </Show>
           </div>
 
-          
-          <h4>Start Datetime</h4>
+          <p class="text-sm">Note: All dates and times reflect GMT</p>
+          <h4 class="flex justify-center">Start Datetime</h4>
           <div class='flex flex-row gap-4'>
             <SolidDatePicker 
-              fieldName={"fromDate"}
-              setState={store.setState}
+              state={startDate}
+              setState={setStartDate}
+              errors={formState.errors.startDate}
             />
             <SolidTimePicker 
-              fieldName={"untilTime"}
-              setState={store.setState}
+              state={startTime}
+              setState={setStartTime}
+              errors={formState.errors.startTime}
             />
           </div>
-          <h4>End Datetime</h4>
+          <h4 class="flex justify-center">End Datetime</h4>
           <div class='flex flex-row gap-4'>
             <SolidDatePicker 
-              fieldName={"untilDate"}
-              setState={store.setState}/>
+              state={endDate}
+              setState={setEndDate}
+              errors={formState.errors.endDate}
+            />
             <SolidTimePicker 
-              fieldName={"untilTime"}
-              setState={store.setState}
+              state={endTime}
+              setState={setEndTime}
+              errors={formState.errors.endTime}
             />
           </div>
 
