@@ -156,7 +156,7 @@ const checkDateTime = (state: any, setState: any) => {
     if (isStartDateAfterEndDate) runningBoolean = runningBoolean || true;
   }
 
-  debugger;
+  
   if (!runningBoolean && !startTimeFormatError) {
     // *** if the dates are the same check to see if the start and end times make sense
     startTime = convertTime12to24(state.fields.startTime);
