@@ -69,6 +69,7 @@ const checkGovPeriod = (state: any, setState: any): boolean => {
 const checkDateTime = (state: any, setState: any) => {
   let startDateFieldError = false;
   let startTimeFieldError = false;
+  let startTimeFormatError = false;
   let isStartDateAfterEndDate = false;
   let startDate = state.fields.startDate;
   let startTime = state.fields.startTime;
@@ -81,8 +82,14 @@ const checkDateTime = (state: any, setState: any) => {
   const startTimeAfterEndTimeMsg = 'Start time is not allowed to be after the end time on the same day!';
   const startDateAttributeName = 'startDate';
   const startTimeAttributeName = 'startTime';
+  const endDateAttributeName = 'endDate';
+  const endTimeAttributeName = 'endTime';
+  const startTimeFormatErrMsg = 'Start time field is improperly formatted';
+  const endTimeFormatErrMsg = 'End time field is improperly formatted'
   let dateField = {};
   let timeField = {};
+
+  let runningBoolean = false
 
   // *** check if start date and time fields are empty, we dont ahve to worry about
   // end date and time fields because defaults are provided
@@ -105,44 +112,74 @@ const checkDateTime = (state: any, setState: any) => {
   setErrorState(state, setState, startTimeAttributeName, timeField);
 
   // if either field has an error return true
-  if (startDateFieldError || startTimeFieldError) return true;
+  if (startDateFieldError || startTimeFieldError) runningBoolean = runningBoolean || true;
 
+  if(!startTimeFieldError) {
+    // *** Check both time fields to make sure they are complete
+    const [startHour, startMiniutes, startType] = state.fields.startTime.split(/[\s:]+/);
+    const [endHour, endMinutes, endType] = state.fields.endTime.split(/[\s:]+/);
 
-  // *** check if start date if comes after end date
-  isStartDateAfterEndDate = startDate > endDate;
+    const startTimeFormatError = isNaN(startHour) || isNaN(startMiniutes);
+    const endTimeFormatError = isNaN(endHour) || isNaN(endMinutes);
 
-  // create start date after end date error object
-  dateField = {
-    error: isStartDateAfterEndDate,
-    msg: isStartDateAfterEndDate ? startDateAfterEndDateMsg : ''
+    timeField = {
+      error: startTimeFormatError,
+      msg: startTimeFormatError ? startTimeFormatErrMsg : ''
+    }
+
+    setErrorState(state, setState, startTimeAttributeName, timeField);
+    
+    timeField = {
+      error: endTimeFormatError,
+      msg: endTimeFormatError ? endTimeFormatErrMsg : ''
+    }
+
+    setErrorState(state, setState, endTimeAttributeName, timeField);
+
+    if (startTimeFormatError || endTimeFormatError) runningBoolean = runningBoolean || true;
+  }
+  
+  
+
+  if (!startDateFieldError) {
+    // *** check if start date if comes after end date
+    isStartDateAfterEndDate = startDate > endDate;
+
+    // create start date after end date error object
+    dateField = {
+      error: isStartDateAfterEndDate,
+      msg: isStartDateAfterEndDate ? startDateAfterEndDateMsg : ''
+    }
+
+    setErrorState(state, setState, startDateAttributeName, dateField);
+
+    if (isStartDateAfterEndDate) runningBoolean = runningBoolean || true;
   }
 
-  if (isStartDateAfterEndDate) return true;
+  debugger;
+  if (!runningBoolean && !startTimeFormatError) {
+    // *** if the dates are the same check to see if the start and end times make sense
+    startTime = convertTime12to24(state.fields.startTime);
+    endTime = convertTime12to24(state.fields.endTime);
+    startTimeFieldError = startTime > endTime;
 
+    timeField = {
+      error: startTimeFieldError,
+      msg: startTimeFieldError ? startTimeAfterEndTimeMsg : ''
+    }
 
-  // *** if the dates are the same check to see if the start and end times make sensce
-  startTime = convertTime12to24(state.fields.startTime);
-  endTime = convertTime12to24(state.fields.endTime);
-  startTimeFieldError = startTime > endTime;
+    setErrorState(state, setState, startTimeAttributeName, timeField);
 
-  timeField = {
-    error: startTimeFieldError,
-    msg: startTimeFieldError ? startTimeAfterEndTimeMsg : ''
+    if (startTimeFieldError) runningBoolean = runningBoolean || true;
   }
 
-  setErrorState(state, setState, startTimeAttributeName, timeField);
-
-  if (startTimeFieldError) return true
-
-  // Check both time fields to make sure they are complete
-
-  return false;
+  return runningBoolean;
 }
 
 export const errorsDetected = (state: any, setState: any): boolean => {
   // run each check
   const addressCheck = checkAccountAddress(state, setState);
-  const govPeriodCheck = checkGovPeriod(state, setState);
+  //const govPeriodCheck = checkGovPeriod(state, setState);
   const dateTimeCheck = checkDateTime(state, setState)
 
   return addressCheck
