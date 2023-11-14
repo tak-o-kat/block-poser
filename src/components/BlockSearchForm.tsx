@@ -1,7 +1,6 @@
 import { Component, Show, onMount, createSignal } from 'solid-js';
 import { PickerValue, TimeValue, utils, DateMath } from '@rnwonder/solid-date-picker';
 
-
 import { useGlobalContext } from '../context/store';
 import { graphqlClient } from '../utils/graphqlClient';
 import { findBalance } from '../utils/graphqlQueries';
@@ -163,7 +162,7 @@ const BlockSearchForm: Component = () => {
             </Show>
           </div>
 
-          <p class="text-sm">Note: All dates and times reflect GMT</p>
+          <p class="flex justify-center text-sm"><span class="font-semibold">Note</span>: All dates and times reflect GMT</p>
           <h4 class="flex justify-center">Start Datetime</h4>
           <div class='flex flex-row gap-4'>
             <SolidDatePicker 
