@@ -14,7 +14,7 @@ const SolidTimePicker = (props: any) => {
             <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
           </svg>
         </div>
-        <div class="mx-1 text-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-solid">
+        <div class="mx-1 w-full text-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-solid">
           <TimePicker
             placeholder="Select Time"
             value={props.state} 
@@ -28,7 +28,7 @@ const SolidTimePicker = (props: any) => {
           /> 
           
         </div>
-        <div class="flex items-center border-l dark:border-gray-600 px-1.5 sm:px-3 ">
+        <div class="flex mx-auto items-center border-l dark:border-gray-600 sm:px-3 px-1.5">
             GMT
           </div>
       </div>

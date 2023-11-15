@@ -1,4 +1,4 @@
-import { Component, Show, onMount, createSignal } from 'solid-js';
+import { Show, onMount, createSignal } from 'solid-js';
 import { PickerValue, TimeValue, utils, DateMath } from '@rnwonder/solid-date-picker';
 
 import { useGlobalContext } from '../context/store';
@@ -10,18 +10,18 @@ import SolidTimePicker from './SolidTimePicker';
 import { createStore } from 'solid-js/store';
 
 
-const BlockSearchForm: Component = () => {
+const BlockSearchForm = () => {
   const store: any = useGlobalContext();
   const gmtDate = new Date().toISOString().slice(0, 10);
   const [year, month, day] = (gmtDate).split('-').map((n) => parseInt(n));
-  const currentTimeText = "Current Time (GMT)";
+  const currentTimeText = "Current Time";
   const [startDate, setStartDate] = createSignal<PickerValue>({
     label: '',
     value: {},
   });
   const [startTime, setStartTime] = createSignal<TimeValue>({
     label: '',
-    value: {},
+    value: {}
   });
   const [endDate, setEndDate] = createSignal<PickerValue>({
     label: gmtDate,
@@ -108,11 +108,11 @@ const BlockSearchForm: Component = () => {
 
   return (
     <section class="mx-auto w-full px-4 py-4 sm:px-8 sm:py-10 text-gray-600 dark:text-gray-100">
-      <div class="mx-auto sm:max-w-2xl pb-5 border-b border-gray-600">
+      <div class="mx-auto sm:max-w-3xl pb-5 border-b border-gray-600">
         <div class="text-center">
-          <h1 class="text-xl font-bold sm:text-3xl text-gray-600 dark:text-gray-100">Get Blocks!</h1>
+          <h1 class="text-xl font-bold sm:text-3xl">Get Blocks!</h1>
         </div>
-        <form onSubmit={submit} class="sm:w-[36rem] mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
+        <form onSubmit={submit} class="sm:max-w-2xl mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
           
           
           <div>
@@ -128,7 +128,7 @@ const BlockSearchForm: Component = () => {
                   })
                 }
                 type="text"
-                class={`${formState.errors.accountAddress.error && 'border-red-500 dark:border-red-500'} border w-full rounded-lg p-3 pe-12 dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none`}
+                class={`${formState.errors.accountAddress.error ? 'border-red-500 dark:border-red-500' : ''} border w-full rounded-lg p-3 pe-12 dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none`}
                 placeholder="Node Address"
                 maxlength={58}
               />
@@ -162,7 +162,8 @@ const BlockSearchForm: Component = () => {
             </Show>
           </div>
 
-          <p class="flex justify-center text-sm"><span class="font-semibold">Note</span>: All dates and times reflect GMT</p>
+
+          <div class="flex justify-center text-sm"><span class="font-semibold">Note</span>: All dates and times reflect GMT</div>
           <h4 class="flex justify-center">Start Datetime</h4>
           <div class='flex flex-row gap-4'>
             <SolidDatePicker 
