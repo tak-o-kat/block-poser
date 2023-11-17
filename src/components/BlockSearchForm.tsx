@@ -120,7 +120,9 @@ const BlockSearchForm = () => {
           <h1 class="text-xl font-bold sm:text-3xl">Get Blocks!</h1>
         </div>
         <form onSubmit={submit} class=""> 
-          <fieldset disabled={true} class="sm:max-w-2xl mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
+          <fieldset disabled={searching()} class="sm:max-w-2xl mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
+            
+            
             <div>
               <label class="sr-only text-md">Node Address</label>
               <div>
@@ -157,7 +159,7 @@ const BlockSearchForm = () => {
                 id="period"
                 aria-placeholder="Select a Period"
                 class={`${formState.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} border bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 h-12 w-full border-1 rounded-lg px-2 outline-0 outline-gray-100`}>
-                <option disabled selected value='' aria-placeholder=''>Select a Period</option>
+                <option disabled selected value=''>Select a Period</option>
                 <option value="g9">Gov - 9</option>
                 <option value="g8">Gov - 8</option>
                 <option value="g7">Gov - 7</option>
@@ -170,7 +172,7 @@ const BlockSearchForm = () => {
 
 
             <div class="flex justify-center text-sm"><span class="font-semibold">Note</span>: All dates and times reflect GMT</div>
-            <h4 class="flex justify-center">Start Datetime</h4>
+            <h4 class="flex justify-center">Start Date & Time</h4>
             <div class='flex flex-row gap-4'>
               <SolidDatePicker 
                 state={startDate}
@@ -183,7 +185,7 @@ const BlockSearchForm = () => {
                 errors={formState.errors.startTime}
               />
             </div>
-            <h4 class="flex justify-center">End Datetime</h4>
+            <h4 class="flex justify-center">End Date & Time</h4>
             <div class='flex flex-row gap-4'>
               <SolidDatePicker 
                 state={endDate}
