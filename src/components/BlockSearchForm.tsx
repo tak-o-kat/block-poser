@@ -109,7 +109,7 @@ const BlockSearchForm = () => {
       }
       setSearching(false);
 
-    }, 3000);
+    }, 1000);
       
   };
 
@@ -139,7 +139,7 @@ const BlockSearchForm = () => {
                 <span class="p-1 text-sm text-red-600">{formState.errors.accountAddress.msg}</span>
               </Show>
             </div>
-            <div class="disbled:opacity-70">
+            <div class="h-[3rem] border border-gray-300 dark:border-gray-600 rounded-lg">
               <select
                 value={formState.fields.govPeriod}
                 onChange={(e) => store.setState({
@@ -150,7 +150,7 @@ const BlockSearchForm = () => {
                 })}
                 id="period"
                 aria-placeholder="Select a Period"
-                class={`${formState.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} border bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 border-gray-300 dark:border-gray-600 h-12 w-full border-1 rounded-lg px-2 outline-0 outline-gray-100`}>
+                class={`${formState.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} rounded-lg bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 h-full w-full border-1 pl-2 outline-0 border-r-8 border-r-white dark:border-r-gray-700`}>
                 <option disabled selected value=''>Select a Period</option>
                 <option value="g9">Gov - 9</option>
                 <option value="g8">Gov - 8</option>
@@ -177,7 +177,7 @@ const BlockSearchForm = () => {
                 errors={formState.errors.startTime}
               />
             </div>
-            <h4 class="flex justify-center">End Date & Time</h4>
+            <h4 class={`flex justify-center ${formState.errors.startDate.error || formState.errors.startTime.error ? 'pt-2' : ''}`}>End Date & Time</h4>
             <div class='flex flex-row gap-4 h-[3rem]'>
               <SolidDatePicker 
                 state={endDate}
