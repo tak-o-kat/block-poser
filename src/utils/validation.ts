@@ -1,4 +1,6 @@
-import { isValidAddress } from "algosdk"
+import { isValidAddress } from "algosdk";
+import { convertTime12to24 } from './helperFunctions';
+
 
 // helper function to set the error obj for a single field
 const setErrorState = (state: any, setState: any, name: string, obj: any) => {
@@ -10,21 +12,6 @@ const setErrorState = (state: any, setState: any, name: string, obj: any) => {
   });
 }
 
-// helper function to convert 12 hour time to 24 hour time
-const convertTime12to24 = (time12h: string) => {
-  const [time, modifier] = time12h.split(' ');
-
-  let [hours, minutes, seconds] = time.split(':');
-  if (hours === '12') {
-    hours = '00';
-  }
-
-  if (modifier === 'PM') {
-    hours = (parseInt(hours, 10) + 12).toString();
-  }
-
-  return `${hours}:${minutes}:${seconds === undefined ? '00': seconds}`;
-}
 
 const checkAccountAddress = (state: any, setState: any): boolean => {
   let emptyFieldError = false;
@@ -65,6 +52,7 @@ const checkGovPeriod = (state: any, setState: any): boolean => {
   setErrorState(state, setState, attributeName, fields);
   return govPeriodError;
 };
+
 
 const checkDateTime = (state: any, setState: any) => {
   let startDateFieldError = false;
@@ -114,8 +102,9 @@ const checkDateTime = (state: any, setState: any) => {
   // if either field has an error return true
   if (startDateFieldError || startTimeFieldError) runningBoolean = runningBoolean || true;
 
+
+  // *** Check both time fields to make sure they are complete
   if(!startTimeFieldError) {
-    // *** Check both time fields to make sure they are complete
     const [startHour, startMiniutes, startType] = state.fields.startTime.split(/[\s:]+/);
     const [endHour, endMinutes, endType] = state.fields.endTime.split(/[\s:]+/);
 
@@ -140,9 +129,8 @@ const checkDateTime = (state: any, setState: any) => {
   }
   
   
-
+  // *** check if start date if comes after end date
   if (!startDateFieldError) {
-    // *** check if start date if comes after end date
     isStartDateAfterEndDate = startDate > endDate;
 
     // create start date after end date error object
@@ -156,9 +144,10 @@ const checkDateTime = (state: any, setState: any) => {
     if (isStartDateAfterEndDate) runningBoolean = runningBoolean || true;
   }
 
-  
-  if (!runningBoolean && !startTimeFormatError) {
-    // *** if the dates are the same check to see if the start and end times make sense
+
+  // *** if the dates are the same check to see if the start and end times make sense
+  if (!runningBoolean && !startTimeFormatError && 
+    state.fields.startDate === state.fields.endDate) {
     startTime = convertTime12to24(state.fields.startTime);
     endTime = convertTime12to24(state.fields.endTime);
     startTimeFieldError = startTime > endTime;
@@ -182,5 +171,5 @@ export const errorsDetected = (state: any, setState: any): boolean => {
   //const govPeriodCheck = checkGovPeriod(state, setState);
   const dateTimeCheck = checkDateTime(state, setState)
 
-  return addressCheck
+  return addressCheck || dateTimeCheck;
 }
