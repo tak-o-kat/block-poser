@@ -18,14 +18,14 @@ const App: Component = () => {
       <div class="flex flex-col">
         <BlockSearchForm />
 
-        <section class="mx-auto sm:max-w-3xl pb-5 flex justify-center bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-100">
-          <div class="">
+        <section class="mx-auto w-full pb-5 p-2 sm:px-8 sm:py-10 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-100">
+          <div class="mx-auto sm:max-w-3xl ">
             <div class="overflow-scroll-y">
               <div class="flow-root">
                 <dl class="-my-3 divide-y divide-gray-300 sm:text-base text-sm">
                   <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-4 sm:gap-2">
                     <dt class="font-medium">Node Address:</dt>
-                    <dd class="sm:col-span-2 md:overflow-visible overflow-x-scroll px-2 w-[24rem]">53R4HSFA24P6F7PO5LPIWH2J3UZDEYDX5O72JQPYFI2RT4VOAJRJUESSNM</dd>
+                    <dd class="sm:col-span-2 overflow-auto md:overflow-visible overflow-x-scroll px-2 md:w-[24rem]">53R4HSFA24P6F7PO5LPIWH2J3UZDEYDX5O72JQPYFI2RT4VOAJRJUESSNM</dd>
                   </div>
 
                   <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-4 sm:gap-4">

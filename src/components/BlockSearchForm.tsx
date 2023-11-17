@@ -119,97 +119,98 @@ const BlockSearchForm = () => {
         <div class="text-center">
           <h1 class="text-xl font-bold sm:text-3xl">Get Blocks!</h1>
         </div>
-        <form onSubmit={submit} class="sm:max-w-2xl mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
-          
-          
-          <div>
-            <label class="sr-only text-md">Node Address</label>
+        <form onSubmit={submit} class=""> 
+          <fieldset disabled={true} class="sm:max-w-2xl mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
             <div>
-              <input
-                value={formState.fields.accountAddress}
-                onChange={(e) => setFormState({ 
-                    fields: {
-                      ...formState.fields,
-                      accountAddress: e.currentTarget.value,
-                    }
-                  })
-                }
-                type="text"
-                class={`${formState.errors.accountAddress.error ? 'border-red-500 dark:border-red-500' : ''} border w-full rounded-lg p-3 pe-12 dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none`}
-                placeholder="Node Address"
-                maxlength={58}
-              />
-              <Show when={formState.errors.accountAddress.error}>
-                <span class="p-1 text-sm text-red-600">{formState.errors.accountAddress.msg}</span>
+              <label class="sr-only text-md">Node Address</label>
+              <div>
+                <input
+                  value={formState.fields.accountAddress}
+                  onChange={(e) => setFormState({ 
+                      fields: {
+                        ...formState.fields,
+                        accountAddress: e.currentTarget.value,
+                      }
+                    })
+                  }
+                  type="text"
+                  class={`${formState.errors.accountAddress.error ? 'border-red-500 dark:border-red-500' : ''} border w-full rounded-lg p-3 pe-12 dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none`}
+                  placeholder="Node Address"
+                  maxlength={58}
+                />
+                <Show when={formState.errors.accountAddress.error}>
+                  <span class="p-1 text-sm text-red-600">{formState.errors.accountAddress.msg}</span>
+                </Show>
+              </div>
+            </div>
+
+
+            <div>
+              <select
+                value={formState.fields.govPeriod}
+                onChange={(e) => store.setState({
+                  fields: {
+                    ...formState.fields,
+                    govPeriod: e.currentTarget.value,
+                  }
+                })}
+                id="period"
+                aria-placeholder="Select a Period"
+                class={`${formState.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} border bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 h-12 w-full border-1 rounded-lg px-2 outline-0 outline-gray-100`}>
+                <option disabled selected value='' aria-placeholder=''>Select a Period</option>
+                <option value="g9">Gov - 9</option>
+                <option value="g8">Gov - 8</option>
+                <option value="g7">Gov - 7</option>
+                <option value="g6">Gov - 6</option>
+              </select>
+              <Show when={formState.errors.govPeriod.error}>
+                <span class="p-1 text-sm text-red-600">{formState.errors.govPeriod.msg}</span>
               </Show>
             </div>
-          </div>
 
 
-          <div>
-            <select
-              value={formState.fields.govPeriod}
-              onChange={(e) => store.setState({
-                fields: {
-                  ...formState.fields,
-                  govPeriod: e.currentTarget.value,
-                }
-              })}
-              id="period"
-              aria-placeholder="Select a Period"
-              class={`${formState.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} border bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 h-12 w-full border-1 rounded-lg px-2 outline-0 outline-gray-100`}>
-              <option disabled selected value='' aria-placeholder=''>Select a Period</option>
-              <option value="g9">Gov - 9</option>
-              <option value="g8">Gov - 8</option>
-              <option value="g7">Gov - 7</option>
-              <option value="g6">Gov - 6</option>
-            </select>
-            <Show when={formState.errors.govPeriod.error}>
-              <span class="p-1 text-sm text-red-600">{formState.errors.govPeriod.msg}</span>
-            </Show>
-          </div>
+            <div class="flex justify-center text-sm"><span class="font-semibold">Note</span>: All dates and times reflect GMT</div>
+            <h4 class="flex justify-center">Start Datetime</h4>
+            <div class='flex flex-row gap-4'>
+              <SolidDatePicker 
+                state={startDate}
+                setState={setStartDate}
+                errors={formState.errors.startDate}
+              />
+              <SolidTimePicker 
+                state={startTime}
+                setState={setStartTime}
+                errors={formState.errors.startTime}
+              />
+            </div>
+            <h4 class="flex justify-center">End Datetime</h4>
+            <div class='flex flex-row gap-4'>
+              <SolidDatePicker 
+                state={endDate}
+                setState={setEndDate}
+                errors={formState.errors.endDate}
+              />
+              <SolidTimePicker 
+                state={endTime}
+                setState={setEndTime}
+                errors={formState.errors.endTime}
+              />
+            </div>
 
-
-          <div class="flex justify-center text-sm"><span class="font-semibold">Note</span>: All dates and times reflect GMT</div>
-          <h4 class="flex justify-center">Start Datetime</h4>
-          <div class='flex flex-row gap-4'>
-            <SolidDatePicker 
-              state={startDate}
-              setState={setStartDate}
-              errors={formState.errors.startDate}
-            />
-            <SolidTimePicker 
-              state={startTime}
-              setState={setStartTime}
-              errors={formState.errors.startTime}
-            />
-          </div>
-          <h4 class="flex justify-center">End Datetime</h4>
-          <div class='flex flex-row gap-4'>
-            <SolidDatePicker 
-              state={endDate}
-              setState={setEndDate}
-              errors={formState.errors.endDate}
-            />
-            <SolidTimePicker 
-              state={endTime}
-              setState={setEndTime}
-              errors={formState.errors.endTime}
-            />
-          </div>
-
+            
+            <div class="flex items-center justify-between">
+              <button
+                type="submit"
+                aria-busy={searching()}
+                disabled={searching()}
+                class={`${searching() ? 'cursor-not-allowed opacity-50' : ''} inline-block w-full rounded-lg !bg-blue-400 dark:!bg-blue-500 px-5 py-3 font-medium text-white sm:w-[12rem]`}
+              >
+                {searching() ? 'Seaching...' : 'Search'}
+                
+              </button>
+            </div>
+          </fieldset>
           
-          <div class="flex items-center justify-between">
-            <button
-              aria-busy={searching()}
-              type="submit"
-              disabled={searching() ? true : false}
-              class={`${searching() ? 'cursor-not-allowed opacity-50' : ''} inline-block w-full rounded-lg !bg-blue-400 dark:!bg-blue-500 px-5 py-3 font-medium text-white sm:w-[12rem]`}
-            >
-              {searching() ? 'Seaching...' : 'Search'}
-              
-            </button>
-          </div>
 
         </form>
       </div>
