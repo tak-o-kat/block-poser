@@ -116,9 +116,6 @@ const BlockSearchForm = () => {
   return (
     <section class="mx-auto w-full px-4 py-4 sm:px-8 sm:py-10 text-gray-600 dark:text-gray-100">
       <div class="mx-auto sm:max-w-3xl pb-5 border-b border-gray-600">
-        <div class="text-center">
-          <h1 class="text-xl font-bold sm:text-3xl">Get Blocks!</h1>
-        </div>
         <form onSubmit={submit} class=""> 
           <fieldset disabled={searching()} class="sm:max-w-2xl mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
     
@@ -168,7 +165,7 @@ const BlockSearchForm = () => {
 
             <div class="flex justify-center text-sm"><span class="font-semibold">Note</span>: All dates and times reflect GMT</div>
             <h4 class="flex justify-center">Start Date & Time</h4>
-            <div class='flex flex-row gap-4 disabled:opacity-50'>
+            <div class='flex flex-row gap-4 h-[3rem]'>
               <SolidDatePicker 
                 state={startDate}
                 setState={setStartDate}
@@ -181,7 +178,7 @@ const BlockSearchForm = () => {
               />
             </div>
             <h4 class="flex justify-center">End Date & Time</h4>
-            <div class='flex flex-row gap-4'>
+            <div class='flex flex-row gap-4 h-[3rem]'>
               <SolidDatePicker 
                 state={endDate}
                 setState={setEndDate}

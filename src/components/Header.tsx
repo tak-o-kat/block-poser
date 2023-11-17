@@ -8,10 +8,10 @@ const Header: Component = () => {
         <div class="sm:flex sm:items-center sm:justify-between">
           <div class="text-center sm:text-left">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 sm:text-3xl">
-              Block Ⱥ-Poser!  
+              Block Poser!  
             </h1>
             <p class="mt-1.5 text-sm text-gray-500">
-              Lets find your Algorand blocks! 🎉
+              Lets find your proposed blocks! 🎉
             </p>
           </div>
           <div class="mt-4 flex justify-center sm:mt-0 sm:text-center">

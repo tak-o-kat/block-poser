@@ -2,7 +2,7 @@ import type { Component } from 'solid-js';
 
 const BlockResults: Component = () => {
   return (
-    <section class="mx-auto w-full pb-5 p-2 sm:px-8 sm:py-10 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-100">
+    <section class="mx-auto w-full pb-3 px-4 first-letter:py-4 sm:px-8 sm:py-10 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-100">
       <div class="mx-auto sm:max-w-3xl ">
         <div class="overflow-scroll-y">
           <div class="flow-root">
