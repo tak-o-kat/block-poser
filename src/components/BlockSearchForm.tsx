@@ -1,13 +1,15 @@
-import { Show, onMount, createSignal } from 'solid-js';
+import { Show, createSignal } from 'solid-js';
 import { PickerValue, TimeValue, utils, DateMath } from '@rnwonder/solid-date-picker';
+import SolidDatePicker from './SolidDatePicker';
+import SolidTimePicker from './SolidTimePicker';
 
 import { useGlobalContext } from '../context/store';
 import { graphqlClient } from '../utils/graphqlClient';
-import { findBalance } from '../utils/graphqlQueries';
+import { findBalance, getBlockCount } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
-import SolidDatePicker from './SolidDatePicker';
-import SolidTimePicker from './SolidTimePicker';
 import { createStore } from 'solid-js/store';
+import { convertDateObjectToDate } from '@rnwonder/solid-date-picker/types/utils';
+import { convertTime12to24 } from '../utils/helperFunctions';
 
 
 const BlockSearchForm = () => {
@@ -15,6 +17,7 @@ const BlockSearchForm = () => {
   const gmtDate = new Date().toISOString().slice(0, 10);
   const [year, month, day] = (gmtDate).split('-').map((n) => parseInt(n));
   const currentTimeText = "Current Time";
+  const [searching, setSearching] = createSignal(false);
   const [startDate, setStartDate] = createSignal<PickerValue>({
     label: '',
     value: {},
@@ -73,38 +76,42 @@ const BlockSearchForm = () => {
 
   const submit = async (e: any) => {
     e.preventDefault();
+    setSearching(true);
     // set date and time values into the form state
-    setFormState({
-      ...formState,
-      fields: {
-        ...formState.fields,
-        startDate: startDate().label,
-        startTime: startTime().label,
-        endDate: endDate().label,
-        endTime: endTime().label === currentTimeText ? new Date().toISOString().slice(11,19): endTime().label, // get GMT time if current time
-      }
-    })
+    setTimeout(function() {
+      setFormState({
+        ...formState,
+        fields: {
+          ...formState.fields,
+          startDate: startDate().label,
+          startTime: startTime().label,
+          endDate: endDate().label,
+          endTime: endTime().label === currentTimeText ? new Date().toISOString().slice(11,19) : endTime().label, // get GMT time if current time
+        }
+      });
 
-    // Check if any field has errors
-    if (!errorsDetected(formState, setFormState)) {
-      // Set the graphql variables
-      const variables = {
-        //addy: field.address,
-      }
+      // Check if any field has errors
+      if (!errorsDetected(formState, setFormState)) { //
+        // Set the graphql variables
+        const variables = {
+          addy: formState.fields.accountAddress,
+          start: `${formState.fields.startDate}T${convertTime12to24(formState.fields.startTime)}.000Z`, // 2023-10-01T00:00:00.000Z
+          end: `${formState.fields.endDate}T${convertTime12to24(formState.fields.endTime)}.000Z`,
+        }
 
-       // Make graphql query request
-      try {
-        //const req = await graphqlClient.request(findBalance, variables);
-        console.log();
-      } catch (error) {
-        console.log(error);
+        // Make graphql query request
+        try {
+          //const req = await graphqlClient.request(getBlockCount, variables);
+          console.log(req);
+        } catch (error) {
+          console.log(error);
+        }
       }
-    }
+      setSearching(false);
+
+    }, 3000);
+      
   };
-
-  onMount(() => {
-
-  });
 
   return (
     <section class="mx-auto w-full px-4 py-4 sm:px-8 sm:py-10 text-gray-600 dark:text-gray-100">
@@ -194,10 +201,13 @@ const BlockSearchForm = () => {
           
           <div class="flex items-center justify-between">
             <button
+              aria-busy={searching()}
               type="submit"
-              class="inline-block w-full rounded-lg !bg-blue-400 dark:!bg-blue-500 px-5 py-3 font-medium text-white sm:w-[12rem]"
+              disabled={searching() ? true : false}
+              class={`${searching() ? 'cursor-not-allowed opacity-50' : ''} inline-block w-full rounded-lg !bg-blue-400 dark:!bg-blue-500 px-5 py-3 font-medium text-white sm:w-[12rem]`}
             >
-              Search
+              {searching() ? 'Seaching...' : 'Search'}
+              
             </button>
           </div>
 
