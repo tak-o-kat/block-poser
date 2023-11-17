@@ -121,33 +121,28 @@ const BlockSearchForm = () => {
         </div>
         <form onSubmit={submit} class=""> 
           <fieldset disabled={searching()} class="sm:max-w-2xl mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
-            
-            
-            <div>
+    
+            <div class="">
               <label class="sr-only text-md">Node Address</label>
-              <div>
-                <input
-                  value={formState.fields.accountAddress}
-                  onChange={(e) => setFormState({ 
-                      fields: {
-                        ...formState.fields,
-                        accountAddress: e.currentTarget.value,
-                      }
-                    })
-                  }
-                  type="text"
-                  class={`${formState.errors.accountAddress.error ? 'border-red-500 dark:border-red-500' : ''} border w-full rounded-lg p-3 pe-12 dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none`}
-                  placeholder="Node Address"
-                  maxlength={58}
-                />
-                <Show when={formState.errors.accountAddress.error}>
-                  <span class="p-1 text-sm text-red-600">{formState.errors.accountAddress.msg}</span>
-                </Show>
-              </div>
+              <input
+                value={formState.fields.accountAddress}
+                onChange={(e) => setFormState({ 
+                    fields: {
+                      ...formState.fields,
+                      accountAddress: e.currentTarget.value,
+                    }
+                  })
+                }
+                type="text"
+                class={`${formState.errors.accountAddress.error ? 'border-red-500 dark:border-red-500' : ''} h=[3rem] bg-white dark:bg-gray-700 disabled:opacity-100 border w-full rounded-lg p-3 pe-12 border-gray-300 dark:border-gray-600 outline-none`}
+                placeholder="Node Address"
+                maxlength={58}
+              />
+              <Show when={formState.errors.accountAddress.error}>
+                <span class="p-1 text-sm text-red-600">{formState.errors.accountAddress.msg}</span>
+              </Show>
             </div>
-
-
-            <div>
+            <div class="disbled:opacity-70">
               <select
                 value={formState.fields.govPeriod}
                 onChange={(e) => store.setState({
@@ -158,7 +153,7 @@ const BlockSearchForm = () => {
                 })}
                 id="period"
                 aria-placeholder="Select a Period"
-                class={`${formState.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} border bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 h-12 w-full border-1 rounded-lg px-2 outline-0 outline-gray-100`}>
+                class={`${formState.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} border bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 border-gray-300 dark:border-gray-600 h-12 w-full border-1 rounded-lg px-2 outline-0 outline-gray-100`}>
                 <option disabled selected value=''>Select a Period</option>
                 <option value="g9">Gov - 9</option>
                 <option value="g8">Gov - 8</option>
@@ -173,7 +168,7 @@ const BlockSearchForm = () => {
 
             <div class="flex justify-center text-sm"><span class="font-semibold">Note</span>: All dates and times reflect GMT</div>
             <h4 class="flex justify-center">Start Date & Time</h4>
-            <div class='flex flex-row gap-4'>
+            <div class='flex flex-row gap-4 disabled:opacity-50'>
               <SolidDatePicker 
                 state={startDate}
                 setState={setStartDate}
