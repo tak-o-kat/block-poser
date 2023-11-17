@@ -9,7 +9,7 @@ import { findBalance, getBlockCount } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
 import { createStore } from 'solid-js/store';
 import { convertDateObjectToDate } from '@rnwonder/solid-date-picker/types/utils';
-import { convertTime12to24 } from '../utils/helperFunctions';
+import { convertTime12to24, convertTime24to12 } from '../utils/helperFunctions';
 
 
 const BlockSearchForm = () => {
@@ -40,7 +40,7 @@ const BlockSearchForm = () => {
   const [formState, setFormState] = createStore({
     fields: {
       accountAddress: '',
-      govPeriod: '',
+      preset: '',
       startDate: '',
       startTime: '',
       endDate: '',
@@ -51,7 +51,7 @@ const BlockSearchForm = () => {
         error: false,
         msg: '',
       },
-      govPeriod: {
+      preset: {
         error: false,
         msg: ''
       },
@@ -73,6 +73,60 @@ const BlockSearchForm = () => {
       }
     },
   });
+
+  // Function to convert preset into all four date and time entries
+  const selectPreset = (e: any) => {
+    e.preventDefault();
+    const currentDate = new Date().toISOString().slice(0, 10);
+    const currentTime = convertTime24to12(new Date().toISOString().slice(11,19));
+    let dateTimeValues = {
+      startDate: '',
+      startTime: '',
+      endDate: '',
+      endTime: '',
+    };
+
+    switch (e.currentTarget.value) {
+      case 'last24':
+        dateTimeValues.startTime = currentTime
+        dateTimeValues.endTime = currentTime // we can use this exact same time
+        dateTimeValues.endDate = currentDate;
+        dateTimeValues.startDate = `${currentDate.slice(0, 7)}-${(parseInt(currentDate.slice(-2)) - 1).toString()}`;
+        break;
+    
+      default:
+        break;
+    }
+
+    let [year, month, day] = dateTimeValues.startDate.split('-').map((n) => parseInt(n));
+    setStartDate({
+      label: dateTimeValues.startDate,
+      value: {
+        selectedDateObject: {year: year, month: month - 1 , day: day}
+      }
+    });
+
+    let [hour, minute, second] = dateTimeValues.startTime.split(':').map((n) => parseInt(n));
+    setStartTime({
+      label: dateTimeValues.startTime,
+      value: {hour: hour, minute: minute, second: second}
+    });
+
+    [year, month, day] = dateTimeValues.endDate.split('-').map((n) => parseInt(n));
+    setEndDate({
+      label: dateTimeValues.endDate,
+      value: {
+        selectedDateObject: {year: year, month: month - 1 , day: day}
+      }
+    });
+
+    [hour, minute, second] = dateTimeValues.endTime.split(':').map((n) => parseInt(n));
+    setEndTime({
+      label: dateTimeValues.endTime,
+      value: {hour: hour, minute: minute, second: second}
+    });
+  };
+
 
   const submit = async (e: any) => {
     e.preventDefault();
@@ -141,24 +195,18 @@ const BlockSearchForm = () => {
             </div>
             <div class="h-[3rem] border border-gray-300 dark:border-gray-600 rounded-lg">
               <select
-                value={formState.fields.govPeriod}
-                onChange={(e) => store.setState({
-                  fields: {
-                    ...formState.fields,
-                    govPeriod: e.currentTarget.value,
-                  }
-                })}
-                id="period"
-                aria-placeholder="Select a Period"
-                class={`${formState.errors.govPeriod.error && 'border-red-500 dark:border-red-500'} rounded-lg bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 h-full w-full border-1 pl-2 outline-0 border-r-8 border-r-white dark:border-r-gray-700`}>
-                <option disabled selected value=''>Select a Period</option>
-                <option value="g9">Gov - 9</option>
+                value={formState.fields.preset}
+                onChange={(e) => selectPreset(e)}
+                aria-placeholder="Select preset"
+                class={`${formState.errors.preset.error && 'border-red-500 dark:border-red-500'} rounded-lg bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 h-full w-full border-1 pl-2 outline-0 border-r-8 border-r-white dark:border-r-gray-700`}>
+                <option disabled selected value=''>Select Preset</option>
+                <option value="last24">Last 24 hours</option>
                 <option value="g8">Gov - 8</option>
                 <option value="g7">Gov - 7</option>
                 <option value="g6">Gov - 6</option>
               </select>
-              <Show when={formState.errors.govPeriod.error}>
-                <span class="p-1 text-sm text-red-600">{formState.errors.govPeriod.msg}</span>
+              <Show when={formState.errors.preset.error}>
+                <span class="p-1 text-sm text-red-600">{formState.errors.preset.msg}</span>
               </Show>
             </div>
 
