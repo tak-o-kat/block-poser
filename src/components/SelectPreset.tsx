@@ -1,6 +1,6 @@
 import { Show, createSignal } from "solid-js";
 import { DateMath } from "@rnwonder/solid-date-picker";
-import { convertTime24to12 } from '../utils/helperFunctions';
+import { convertTime24to12, isoToDisplayDate, dateToIsoDate } from '../utils/helperFunctions';
 
 const SelectPreset= (props: any) => {
   const [selection, setSelection] = createSignal('');
@@ -43,25 +43,33 @@ const SelectPreset= (props: any) => {
           startDate: ''
         });
         break;
-    }
+    };
 
-    let [year, month, day] = dateTimeValues.startDate.split('-').map((n) => parseInt(n));
+    let [year, month, day] = dateTimeValues.startDate.split('-').map((n: string) => parseInt(n));
     props.setStartDate({
-      label: dateTimeValues.startDate,
+      label: dateTimeValues.startDate ? isoToDisplayDate(dateTimeValues.startDate) : '',
+      value: !year ? '' : {
+        selectedDateObject: {
+          year: year ? year : 0, 
+          month: month ? month - 1 : 0 , 
+          day: day ? day : 0
+        }
+      }
+    });
+    
+    let [hour, minute, second] = dateTimeValues.startTime.split(':').map((n: string) => parseInt(n));
+    props.setStartTime({
+      label: dateTimeValues.startTime,
       value: {
-        selectedDateObject: {year: year, month: month - 1 , day: day}
+        hour: hour ? hour : 0, 
+        minute: minute ? minute : 0, 
+        second: second ? second : 0,
       }
     });
 
-    let [hour, minute, second] = dateTimeValues.startTime.split(':').map((n) => parseInt(n));
-    props.setStartTime({
-      label: dateTimeValues.startTime,
-      value: {hour: hour, minute: minute, second: second}
-    });
-
-    [year, month, day] = dateTimeValues.endDate.split('-').map((n) => parseInt(n));
+    [year, month, day] = dateTimeValues.endDate.split('-').map((n: string) => parseInt(n));
     props.setEndDate({
-      label: dateTimeValues.endDate,
+      label: isoToDisplayDate(dateTimeValues.endDate),
       value: {
         selectedDateObject: {year: year, month: month - 1 , day: day}
       }

@@ -66,7 +66,7 @@ const checkDateTime = (state: any, setState: any) => {
 
   const emptyStartDateMsg = 'Start date is required!';
   const emptyStartTimeMsg = 'Start time is required!';
-  const startDateAfterEndDateMsg = "Start date is not allowed to be after end date!"
+  const startDateAfterEndDateMsg = "Start date after end date!"
   const startTimeAfterEndTimeMsg = 'Start time after End Time';
   const startDateAttributeName = 'startDate';
   const startTimeAttributeName = 'startTime';

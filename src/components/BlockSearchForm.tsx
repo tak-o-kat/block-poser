@@ -1,5 +1,5 @@
-import { createSignal } from 'solid-js';
-import { PickerValue, TimeValue } from '@rnwonder/solid-date-picker';
+import { createSignal, onMount } from 'solid-js';
+import { PickerValue, TimeValue, utils } from '@rnwonder/solid-date-picker';
 
 import NodeAddress from './NodeAddress';
 import SelectPreset from './SelectPreset';
@@ -11,7 +11,7 @@ import { graphqlClient } from '../utils/graphqlClient';
 import { getBlockCount } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
 import { createStore } from 'solid-js/store';
-import { convertTime12to24 } from '../utils/helperFunctions';
+import { convertTime12to24, isoToDisplayDate, dateToIsoDate } from '../utils/helperFunctions';
 
 
 
@@ -32,7 +32,7 @@ const BlockSearchForm = () => {
     value: {}
   });
   const [endDate, setEndDate] = createSignal<PickerValue>({
-    label: gmtDate,
+    label: isoToDisplayDate(gmtDate),
     value: {
       selectedDateObject: { year: year, month: month - 1, day: day },
     },
@@ -76,6 +76,10 @@ const BlockSearchForm = () => {
     },
   });
 
+  onMount(() => {
+    const test = utils().convertDateToDateObject(new Date());
+  })
+
 
   const submit = async (e: any) => {
     e.preventDefault();
@@ -86,9 +90,9 @@ const BlockSearchForm = () => {
       ...formState,
       fields: {
         ...formState.fields,
-        startDate: startDate().label,
+        startDate: dateToIsoDate(startDate().label),
         startTime: startTime().label,
-        endDate: endDate().label,
+        endDate: dateToIsoDate(endDate().label),
         endTime: endTime().label === currentTimeText ? new Date().toISOString().slice(11,19) : endTime().label, // get GMT time if current time
       }
     });
