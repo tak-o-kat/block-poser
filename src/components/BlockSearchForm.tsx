@@ -129,7 +129,7 @@ const BlockSearchForm = () => {
   };
 
   return (
-    <section class="mx-auto w-full px-4 py-4 sm:px-8 sm:py-10 text-gray-600 dark:text-gray-100">
+    <section class="mx-auto w-full p-4 text-gray-600 dark:text-gray-100">
       <div class="mx-auto sm:max-w-3xl pb-5 border-b border-gray-600">
         <form onSubmit={submit} class=""> 
           <fieldset disabled={searching()} class="mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
