@@ -1,16 +1,18 @@
 import { createSignal } from 'solid-js';
 import { PickerValue, TimeValue } from '@rnwonder/solid-date-picker';
 
+import NodeAddress from './NodeAddress';
 import SelectPreset from './SelectPreset';
 import SolidDatePicker from './SolidDatePicker';
 import SolidTimePicker from './SolidTimePicker';
+
 import { useGlobalContext } from '../context/store';
 import { graphqlClient } from '../utils/graphqlClient';
 import { getBlockCount } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
 import { createStore } from 'solid-js/store';
 import { convertTime12to24 } from '../utils/helperFunctions';
-import NodeAddress from './NodeAddress';
+
 
 
 const BlockSearchForm = () => {
@@ -105,7 +107,6 @@ const BlockSearchForm = () => {
         const response: any = await graphqlClient.request(getBlockCount, variables);
 
         // set all the response data into the global context to display the results
-        debugger;
         store.setState({
           results: {
             accountAddress: formState.fields.accountAddress,

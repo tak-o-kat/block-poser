@@ -1,11 +1,12 @@
-import { Show } from "solid-js";
+import { Show, createSignal } from "solid-js";
 import { DateMath } from "@rnwonder/solid-date-picker";
 import { convertTime24to12 } from '../utils/helperFunctions';
 
 const SelectPreset= (props: any) => {
-
+  const [selection, setSelection] = createSignal('');
   // Function to convert preset into all four date and time entries
   const updateFields = (value: string) => {
+    setSelection(value);
     const currentDate = new Date().toISOString().slice(0, 10);
     const [currentDateYear, currentDateMonth, currentDateDay] = currentDate.split('-').map(n => parseInt(n));
     const currentDateObj = { year: currentDateYear, month: currentDateMonth - 1, day: currentDateDay };
@@ -76,11 +77,11 @@ const SelectPreset= (props: any) => {
   return (
     <div class="h-[3rem] border border-gray-300 dark:border-gray-600 rounded-lg">
       <select
-        value={props.state.fields.preset}
+        value={selection()}
         onChange={(e) => updateFields(e.currentTarget.value)}
         aria-placeholder="Select preset"
         class={`rounded-lg bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 h-full w-full border-1 pl-2 outline-0 border-r-8 border-r-white dark:border-r-gray-700`}>
-        <option selected value=''>Default values (Presets)</option>
+        <option value=''>Default values (Presets)</option>
         <option value="last24hours">Last 24 hours</option>
         <option value="last7days">Last 7 days</option>
         <option value="last30days">Last 30 days</option>
