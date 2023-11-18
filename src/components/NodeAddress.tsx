@@ -18,6 +18,7 @@ const NodeAddress = (props: any) => {
         value={props.state.fields.accountAddress}
         onChange={(e) => updateState(e.currentTarget.value)}
         type="text"
+        name="AccountAddress"
         class={`${props.state.errors.accountAddress.error ? 'border-red-500 dark:border-red-500' : ''} h=[3rem] bg-white dark:bg-gray-700 disabled:opacity-100 border w-full rounded-lg p-3 pe-12 border-gray-300 dark:border-gray-600 outline-none`}
         placeholder="Node Address"
         maxlength={58}
