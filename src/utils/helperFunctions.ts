@@ -14,7 +14,8 @@ export const convertTime12to24 = (time12h: string) => {
   }
 
   return `${hours}:${minutes}:${seconds === undefined ? '00': seconds}`;
-}
+};
+
 
 export const convertTime24to12 = (time24h: string) => {
   let [hours, minutes, seconds] = time24h.split(':');
@@ -23,4 +24,15 @@ export const convertTime24to12 = (time24h: string) => {
   // convert hour to appropriate 12 hour digit
   hours = (parseInt(hours) % 12 === 0) ? '12' : (parseInt(hours) % 12).toString();
   return `${hours.length === 1 ? '0' + hours : hours}:${minutes}:${seconds} ${modifier}`;
+};
+
+
+export const isoToDisplayDate = (date: string) => {
+  const [year, month, day] = date.split("-");
+  return `${month}-${day}-${year}`;
+}
+
+export const dateToIsoDate = (date: string) => {
+  const [month, day, year] = date.split("-");
+  return `${year}-${month}-${day}`;
 }
