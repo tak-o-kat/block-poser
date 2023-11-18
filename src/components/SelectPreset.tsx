@@ -1,12 +1,11 @@
 import { Show } from "solid-js";
-import { utils, DateMath } from "@rnwonder/solid-date-picker";
-import { convertTime12to24, convertTime24to12 } from '../utils/helperFunctions';
-
+import { DateMath } from "@rnwonder/solid-date-picker";
+import { convertTime24to12 } from '../utils/helperFunctions';
 
 const SelectPreset= (props: any) => {
 
   // Function to convert preset into all four date and time entries
-  const selectPreset = (value: string) => {
+  const updateFields = (value: string) => {
     const currentDate = new Date().toISOString().slice(0, 10);
     const [currentDateYear, currentDateMonth, currentDateDay] = currentDate.split('-').map(n => parseInt(n));
     const currentDateObj = { year: currentDateYear, month: currentDateMonth - 1, day: currentDateDay };
@@ -36,6 +35,12 @@ const SelectPreset= (props: any) => {
         dateTimeValues =  substractDates(1, 'year');
         break;
       default:
+        dateTimeValues = Object.create({
+          startTime: '',
+          endTime: currentTime,
+          endDate: currentDate,
+          startDate: ''
+        });
         break;
     }
 
@@ -61,7 +66,7 @@ const SelectPreset= (props: any) => {
       }
     });
 
-    [hour, minute, second] = dateTimeValues.endTime.split(':').map((n) => parseInt(n));
+    [hour, minute, second] = dateTimeValues.endTime.split(':').map((n: string) => parseInt(n));
     props.setEndTime({
       label: dateTimeValues.endTime,
       value: {hour: hour, minute: minute, second: second}
@@ -71,19 +76,16 @@ const SelectPreset= (props: any) => {
   return (
     <div class="h-[3rem] border border-gray-300 dark:border-gray-600 rounded-lg">
       <select
-        value={props.fields.preset}
-        onChange={(e) => selectPreset(e.currentTarget.value)}
+        value={props.state.fields.preset}
+        onChange={(e) => updateFields(e.currentTarget.value)}
         aria-placeholder="Select preset"
-        class={`${props.errors.preset.error && 'border-red-500 dark:border-red-500'} rounded-lg bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 h-full w-full border-1 pl-2 outline-0 border-r-8 border-r-white dark:border-r-gray-700`}>
-        <option disabled selected value=''>Select Preset</option>
+        class={`rounded-lg bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 h-full w-full border-1 pl-2 outline-0 border-r-8 border-r-white dark:border-r-gray-700`}>
+        <option selected value=''>Default values (Presets)</option>
         <option value="last24hours">Last 24 hours</option>
         <option value="last7days">Last 7 days</option>
         <option value="last30days">Last 30 days</option>
         <option value="lastyear">Last year</option>
       </select>
-      <Show when={props.errors.preset.error}>
-        <span class="p-1 text-sm text-red-600">{props.errors.preset.msg}</span>
-      </Show>
     </div>
   );
 };
