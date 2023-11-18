@@ -110,8 +110,8 @@ const BlockSearchForm = () => {
         store.setState({
           results: {
             accountAddress: formState.fields.accountAddress,
-            startDateTime: `${formState.fields.startDate} ${convertTime12to24(formState.fields.startTime)}`,
-            endDateTime: `${formState.fields.endDate} ${convertTime12to24(formState.fields.endTime)}`,
+            startDateTime: `${formState.fields.startDate} ${convertTime12to24(formState.fields.startTime)} GMT`,
+            endDateTime: `${formState.fields.endDate} ${convertTime12to24(formState.fields.endTime)} GMT`,
             blocksProposed: `${response.algorand.blocks[0].count}`
           }
         });
