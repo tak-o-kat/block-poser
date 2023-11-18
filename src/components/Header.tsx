@@ -5,7 +5,7 @@ import AlgorandLogo from './AlgorandLogo';
 
 const Header: Component = () => {
   return (
-    <header class="bg-gray-200 dark:bg-gray-900  px-4 py-2 text-gray-900 dark:text-gray-100">
+    <header class="bg-gray-200 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100">
       <div class="mx-auto max-w-screen-xl flex items-center justify-between">
         <div class="flex flex-grow flex-shrinkjustify-start px-2">
           <AlgorandLogo />
