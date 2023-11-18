@@ -1,16 +1,17 @@
 import { Show, createSignal } from 'solid-js';
-import { PickerValue, TimeValue, utils, DateMath } from '@rnwonder/solid-date-picker';
+import { PickerValue, TimeValue } from '@rnwonder/solid-date-picker';
+
+import SelectPreset from './SelectPreset';
 import SolidDatePicker from './SolidDatePicker';
 import SolidTimePicker from './SolidTimePicker';
-
 import { useGlobalContext } from '../context/store';
 import { graphqlClient } from '../utils/graphqlClient';
 import { findBalance, getBlockCount } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
 import { createStore } from 'solid-js/store';
-import { convertDateObjectToDate } from '@rnwonder/solid-date-picker/types/utils';
-import { convertTime12to24, convertTime24to12 } from '../utils/helperFunctions';
-import SelectPreset from './SelectPreset';
+import { convertTime12to24 } from '../utils/helperFunctions';
+import NodeAddress from './NodeAddress';
+
 
 
 const BlockSearchForm = () => {
@@ -71,8 +72,6 @@ const BlockSearchForm = () => {
     },
   });
 
-  
-
 
   const submit = async (e: any) => {
     e.preventDefault();
@@ -118,28 +117,10 @@ const BlockSearchForm = () => {
       <div class="mx-auto sm:max-w-3xl pb-5 border-b border-gray-600">
         <form onSubmit={submit} class=""> 
           <fieldset disabled={searching()} class="sm:max-w-2xl mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
-    
-            <div class="">
-              <label class="sr-only text-md">Node Address</label>
-              <input
-                value={formState.fields.accountAddress}
-                onChange={(e) => setFormState({ 
-                    fields: {
-                      ...formState.fields,
-                      accountAddress: e.currentTarget.value,
-                    }
-                  })
-                }
-                type="text"
-                class={`${formState.errors.accountAddress.error ? 'border-red-500 dark:border-red-500' : ''} h=[3rem] bg-white dark:bg-gray-700 disabled:opacity-100 border w-full rounded-lg p-3 pe-12 border-gray-300 dark:border-gray-600 outline-none`}
-                placeholder="Node Address"
-                maxlength={58}
-              />
-              <Show when={formState.errors.accountAddress.error}>
-                <span class="p-1 text-sm text-red-600">{formState.errors.accountAddress.msg}</span>
-              </Show>
-            </div>
-            
+            <NodeAddress 
+              state={formState}
+              setState={setFormState}
+            />
             <SelectPreset
               setStartDate={setStartDate}
               setStartTime={setStartTime}
@@ -148,7 +129,6 @@ const BlockSearchForm = () => {
               state={formState}
               setState={setFormState}
             />
-
             <div class="flex justify-center text-sm"><span class="font-semibold">Note</span>: All dates and times reflect GMT</div>
             <h4 class="flex justify-center">Start Date & Time</h4>
             <div class='flex flex-row gap-4 h-[3rem]'>
@@ -176,8 +156,6 @@ const BlockSearchForm = () => {
                 errors={formState.errors.endTime}
               />
             </div>
-
-            
             <div class="flex items-center justify-between">
               <button
                 type="submit"
@@ -186,12 +164,10 @@ const BlockSearchForm = () => {
                 class={`${searching() ? 'cursor-not-allowed opacity-50' : ''} inline-block w-full rounded-lg !bg-blue-400 dark:!bg-blue-500 px-5 py-3 font-medium text-white sm:w-[12rem]`}
               >
                 {searching() ? 'Seaching...' : 'Search'}
-                
               </button>
             </div>
-          </fieldset>
-          
 
+          </fieldset>
         </form>
       </div>
     </section>
