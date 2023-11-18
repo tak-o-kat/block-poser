@@ -1,5 +1,5 @@
 import { Show } from 'solid-js';
-import DatePicker, { utils, DateMath } from '@rnwonder/solid-date-picker';
+import DatePicker from '@rnwonder/solid-date-picker';
 
 const SolidDatePicker = (props: any) => {
   const minDate = { year: 2019, month: 5, day: 11 };
@@ -25,7 +25,7 @@ const SolidDatePicker = (props: any) => {
             value={props.state} 
             setValue={props.setState}
             hideOutSideDays
-            formatInputLabel="yyyy-mm-dd"
+            formatInputLabel="mm-dd-yyyy"
             minDate={minDate}
             maxDate={maxDate}
             shouldCloseOnSelect={true}
