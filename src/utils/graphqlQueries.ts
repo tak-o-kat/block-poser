@@ -22,3 +22,21 @@ export const getBlockCount = gql`
     }
   }
 `;
+
+export const getBlockList = gql`
+  query ($addy: String!, $start: ISO8601DateTime, $end: ISO8601DateTime) {
+    algorand(network: algorand) {
+      blocks(
+        options: {desc: "height", limit: 10, offset: 0}
+        date: {since: $start, till: $end}
+        proposer: {is: $addy}
+      ) {
+        height
+        timestamp {
+          time(format: "%m-%d-%Y %H:%M:%S")
+        }
+        
+      }
+    }
+  }
+`;
