@@ -1,10 +1,7 @@
 import { type Component } from 'solid-js';
-import { gql } from 'graphql-request'
 
 import Header from './components/Header';
 import BlockSearchForm from './components/BlockSearchForm';
-import { graphqlClient } from './utils/graphqlClient';
-import { findBalance } from './utils/graphqlQueries';
 import BlockResults from './components/BlockResults';
 
 const App: Component = () => {
@@ -19,4 +16,4 @@ const App: Component = () => {
   );
 };
 
-export default App;
+export default App; 
