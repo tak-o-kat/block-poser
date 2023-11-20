@@ -1,4 +1,5 @@
 import type { Component } from 'solid-js';
+
 import ThemeSwitcher from './ThemeSwitcher';
 import PoserIcon from './PoserIcon';
 import AlgorandLogo from './AlgorandLogo';
