@@ -114,16 +114,17 @@ const BlockSearchForm = () => {
         store.setState({
           results: {
             accountAddress: formState.fields.accountAddress,
-            startDateTime: `${formState.fields.startDate} ${convertTime12to24(formState.fields.startTime)} GMT`,
-            endDateTime: `${formState.fields.endDate} ${convertTime12to24(formState.fields.endTime)} GMT`,
-            blocksProposed: `${response.algorand.blocks[0].count}`
+            startDateTime: `${isoToDisplayDate(formState.fields.startDate)} ${convertTime12to24(formState.fields.startTime)} GMT`,
+            endDateTime: `${isoToDisplayDate(formState.fields.endDate)} ${convertTime12to24(formState.fields.endTime)} GMT`,
+            blocksProposed: `${response.algorand.blocks[0].count}`,
+            hasResults: true
           }
         });
       } catch (error) {
         console.log(error);
       }
     }
-
+    // Turn off searching flag
     setSearching(false);
       
   };

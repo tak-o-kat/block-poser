@@ -1,39 +1,37 @@
+import { Show } from 'solid-js';
 import { useGlobalContext } from '../context/store';
+import { isoToDisplayDate } from '../utils/helperFunctions'
 
 const BlockResults = () => {
   const store: any = useGlobalContext();
 
   return (
-    <section class="mx-auto w-full pb-3 px-4 first-letter:py-4 sm:px-8 sm:py-10 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-100">
-      <div class="mx-auto sm:max-w-3xl ">
-        <div class="overflow-scroll-y">
-          <div class="flow-root">
-            <dl class="-my-3 divide-y divide-gray-300 sm:text-base text-sm">
-              <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-5 sm:gap-4">
-                <dt class="font-medium">Blocks Proposed:</dt>
-                <dd class="sm:col-span-2 px-2">{store.state.results.blocksProposed}</dd>
+    <section class="mx-auto w-full p-4 text-gray-600 dark:text-gray-100">
+      <Show when={store.state.results.hasResults}>
+        <div class="mx-auto sm:max-w-3xl flex items-center justify-center h-full rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 p-3">
+          <div class="basis-1/4 p-2 h-full w-full flex flex-col items-center md:justify-center"> 
+            <div class="text-4xl md:text-5xl font-extrabold text-blue-600 ">
+              {store.state.results.blocksProposed}
+            </div>
+            <div class="text-lg">
+              blocks
+            </div>
+          </div>
+          <div class="basis-3/4 px-2 h-full flex md:justify-center overflow-auto">
+            <div class="flex flex-col text-xs">
+              <div class="  overflow-auto">
+                {store.state.results.accountAddress}
               </div>
-              <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-5 sm:gap-2">
-                <dt class="font-medium">Node Address:</dt>
-                <dd 
-                  class="sm:col-span-2 overflow-auto md:overflow-visible 
-                    overflow-x-scroll px-2 md:w-[24rem]"
-                >{store.state.results.accountAddress}</dd>
+              <div class="">
+                {`From: ${store.state.results.startDateTime}`}
               </div>
-
-              <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-5 sm:gap-4">
-                <dt class="font-medium">From:</dt>
-                <dd class="sm:col-span-2 px-2">{store.state.results.startDateTime}</dd>
+              <div class="">
+              {`To: ${store.state.results.endDateTime}`}
               </div>
-
-              <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-5 sm:gap-4">
-                <dt class="font-medium">Until:</dt>
-                <dd class="sm:col-span-2 px-2">{store.state.results.endDateTime}</dd>
-              </div>
-            </dl>
+            </div>
           </div>
         </div>
-      </div>
+      </Show>
     </section>
   );
 };
