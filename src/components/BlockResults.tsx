@@ -1,6 +1,5 @@
 import { Show } from 'solid-js';
 import { useGlobalContext } from '../context/store';
-import { isoToDisplayDate } from '../utils/helperFunctions'
 
 const BlockResults = () => {
   const store: any = useGlobalContext();

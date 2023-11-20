@@ -13,7 +13,7 @@ const SelectPreset= (props: any) => {
     const currentTime = convertTime24to12(new Date().toISOString().slice(11,19));
     let dateTimeValues: any = [];
 
-    const substractDates = (numType: number, type: string) => {
+    const dateSubtraction = (numType: number, type: string) => {
       return Object.create({
         startTime: currentTime,
         endTime: currentTime,
@@ -24,16 +24,16 @@ const SelectPreset= (props: any) => {
 
     switch (value) {
       case 'last24hours':
-        dateTimeValues = substractDates(1, 'day');
+        dateTimeValues = dateSubtraction(1, 'day');
         break;
       case 'last7days':
-        dateTimeValues = substractDates(7, 'day');
+        dateTimeValues = dateSubtraction(7, 'day');
         break;
       case 'last30days':
-        dateTimeValues = substractDates(30, 'day');
+        dateTimeValues = dateSubtraction(30, 'day');
         break;
       case 'lastyear':
-        dateTimeValues =  substractDates(1, 'year');
+        dateTimeValues =  dateSubtraction(1, 'year');
         break;
       default:
         dateTimeValues = Object.create({
@@ -87,9 +87,9 @@ const SelectPreset= (props: any) => {
       <select
         value={selection()}
         onChange={(e) => updateFields(e.currentTarget.value)}
-        aria-placeholder="Select preset"
+        aria-placeholder="Select Preset"
         class={`rounded-lg bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 h-full w-full border-1 pl-2 outline-0 border-r-8 border-r-white dark:border-r-gray-700`}>
-        <option value=''>Default values (Presets)</option>
+        <option value=''>Default Values (Presets)</option>
         <option value="last24hours">Last 24 hours</option>
         <option value="last7days">Last 7 days</option>
         <option value="last30days">Last 30 days</option>
