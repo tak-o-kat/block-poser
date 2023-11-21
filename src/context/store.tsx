@@ -8,6 +8,8 @@ const store = {
     startDateTime: '',
     endDateTime: '',
     blocksProposed: '',
+    getList: false,
+    blockList: [],
   },
   theme: null,
 }

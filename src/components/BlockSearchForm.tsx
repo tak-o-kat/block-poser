@@ -8,10 +8,11 @@ import SolidTimePicker from './SolidTimePicker';
 
 import { useGlobalContext } from '../context/store';
 import { graphqlClient } from '../utils/graphqlClient';
-import { getBlockCount } from '../utils/graphqlQueries';
+import { getBlockCount, getBlockList } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
 import { createStore } from 'solid-js/store';
 import { convertTime12to24, isoToDisplayDate, dateToIsoDate } from '../utils/helperFunctions';
+import Toggle from './Toggle';
 
 
 
@@ -51,6 +52,7 @@ const BlockSearchForm = () => {
       startTime: '',
       endDate: '',
       endTime: '',
+      getList: false,
     },
     errors: {
       accountAddress: {
@@ -76,15 +78,9 @@ const BlockSearchForm = () => {
     },
   });
 
-  onMount(() => {
-    const test = utils().convertDateToDateObject(new Date());
-  })
-
-
   const submit = async (e: any) => {
     e.preventDefault();
     setSearching(true);
-
     // set date and time values into the form state
     setFormState({
       ...formState,
@@ -100,33 +96,36 @@ const BlockSearchForm = () => {
     // Check if any field has errors
     if (!errorsDetected(formState, setFormState)) { //
       // Set the graphql variables
-      const variables = {
+      const vars = {
         addy: formState.fields.accountAddress,
-        start: `${formState.fields.startDate}T${convertTime12to24(formState.fields.startTime)}.000Z`, // 2023-10-01T00:00:00.000Z
+        start: `${formState.fields.startDate}T${convertTime12to24(formState.fields.startTime)}.000Z`,
         end: `${formState.fields.endDate}T${convertTime12to24(formState.fields.endTime)}.000Z`,
       }
 
       // Make graphql query request
       try {
-        const response: any = await graphqlClient.request(getBlockCount, variables);
-
+        const blockResp: any = await graphqlClient.request(getBlockCount, vars);
+        const listResp: any = formState.fields.getList ? await graphqlClient.request(getBlockList, vars) : [];
+        
         // set all the response data into the global context to display the results
         store.setState({
           results: {
             accountAddress: formState.fields.accountAddress,
             startDateTime: `${isoToDisplayDate(formState.fields.startDate)} ${convertTime12to24(formState.fields.startTime)} GMT`,
             endDateTime: `${isoToDisplayDate(formState.fields.endDate)} ${convertTime12to24(formState.fields.endTime)} GMT`,
-            blocksProposed: `${response.algorand.blocks[0].count}`,
-            hasResults: true
+            blocksProposed: `${blockResp.algorand.blocks[0].count}`,
+            hasResults: true,
+            getList: formState.fields.getList,
+            blockList: listResp?.algorand?.blocks || [],
           }
         });
       } catch (error) {
+        // Handle server error
         console.log(error);
       }
     }
     // Turn off searching flag
     setSearching(false);
-      
   };
 
   return (
@@ -177,6 +176,14 @@ const BlockSearchForm = () => {
                 errors={formState.errors.endTime}
               />
             </div>
+            <div class="flex flex-row items-center">
+              <Toggle 
+                state={formState}
+                setState={setFormState}
+              />
+              <span class="px-3">Get the last 10 blocks proposed!</span>
+            </div>
+            
             <div class="flex items-center justify-between">
               <button
                 type="submit"

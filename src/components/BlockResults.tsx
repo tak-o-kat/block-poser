@@ -7,7 +7,7 @@ const BlockResults = () => {
   return (
     <section class="mx-auto w-full p-4 text-gray-600 dark:text-gray-100">
       <Show when={store.state.results.hasResults}>
-        <div class="mx-auto sm:max-w-3xl flex items-center justify-center h-full rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 p-3">
+        <div class="mx-auto sm:max-w-3xl flex items-center justify-center h-full rounded-lg text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 p-3">
           <div class="basis-1/4 p-2 h-full w-full flex flex-col items-center md:justify-center"> 
             <div class="text-4xl md:text-5xl font-extrabold text-blue-600 ">
               {store.state.results.blocksProposed}
