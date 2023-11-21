@@ -12,7 +12,7 @@ const ListResults = () => {
             <div class="basis-1/3 flex justify-center border-b border-r border-gray-300 dark:border-gray-600 font-semibold">Block</div>
             <div class="basis-2/3 flex justify-center border-b border-gray-300 dark:border-gray-600 font-semibold">DateTime</div>
           </div>
-          <For each={store.state.results.blockList} fallback={<div>No Data</div>}>
+          <For each={store.state.results.blockList} fallback={<div class="basis-1/3 flex py-2 justify-center">No Data</div>}>
             {(item, index) => (
               <div class="flex py-1">
                 <div class="basis-1/3 flex justify-center">{item?.height}</div>
