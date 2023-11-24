@@ -21,6 +21,9 @@ const BlockResults = () => {
               <div class="  overflow-auto">
                 {store.state.results.accountAddress}
               </div>
+              <div class="  overflow-auto">
+                {`Status: ${store.state.results.status}`}
+              </div>
               <div class="">
                 {`From: ${store.state.results.startDateTime}`}
               </div>

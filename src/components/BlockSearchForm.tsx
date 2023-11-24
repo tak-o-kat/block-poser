@@ -1,5 +1,5 @@
-import { createSignal, onMount } from 'solid-js';
-import { PickerValue, TimeValue, utils } from '@rnwonder/solid-date-picker';
+import { createSignal } from 'solid-js';
+import { PickerValue, TimeValue } from '@rnwonder/solid-date-picker';
 
 import NodeAddress from './NodeAddress';
 import SelectPreset from './SelectPreset';
@@ -102,14 +102,17 @@ const BlockSearchForm = () => {
         end: `${formState.fields.endDate}T${convertTime12to24(formState.fields.endTime)}.000Z`,
       }
 
-      // Make graphql query request
+      // Make graphql query algonode requests
       try {
+        const accountResp: any = await fetch(`https://mainnet-api.algonode.cloud/v2/accounts/${vars.addy}?format=json&exclude=all`);
+        const accountInfo: any = await accountResp.json();
         const blockResp: any = await graphqlClient.request(getBlockCount, vars);
         const listResp: any = formState.fields.getList ? await graphqlClient.request(getBlockList, vars) : [];
-        
+
         // set all the response data into the global context to display the results
         store.setState({
           results: {
+            status: accountInfo.status,
             accountAddress: formState.fields.accountAddress,
             startDateTime: `${isoToDisplayDate(formState.fields.startDate)} ${convertTime12to24(formState.fields.startTime)} GMT`,
             endDateTime: `${isoToDisplayDate(formState.fields.endDate)} ${convertTime12to24(formState.fields.endTime)} GMT`,

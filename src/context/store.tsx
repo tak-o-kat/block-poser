@@ -3,6 +3,7 @@ import { createContext, useContext } from 'solid-js';
 
 const store = {
   results: {
+    status: '',
     hasResults: false,
     accountAddress: '',
     startDateTime: '',
