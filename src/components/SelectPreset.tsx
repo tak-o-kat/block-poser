@@ -22,6 +22,15 @@ const SelectPreset= (props: any) => {
       });
     };
 
+    const dateSet = (startDate: string, startTime: string, endDate: string, endTime: string) => {
+      return Object.create({
+        startDate: startDate,
+        startTime: startTime,
+        endDate: endDate,
+        endTime: endTime,
+      });
+    }
+
     switch (value) {
       case 'last24hours':
         dateTimeValues = dateSubtraction(1, 'day');
@@ -34,6 +43,11 @@ const SelectPreset= (props: any) => {
         break;
       case 'lastyear':
         dateTimeValues =  dateSubtraction(1, 'year');
+        break;
+      case 'genesis':
+        const genesisDate = "2019-06-11";
+        const genesisTime = "00:00:00";
+        dateTimeValues =  dateSet(genesisDate, genesisTime, currentDate, currentTime);
         break;
       default:
         dateTimeValues = Object.create({
@@ -94,6 +108,7 @@ const SelectPreset= (props: any) => {
         <option value="last7days">Last 7 days</option>
         <option value="last30days">Last 30 days</option>
         <option value="lastyear">Last year</option>
+        <option value="genesis">Genesis</option>
       </select>
     </div>
   );
