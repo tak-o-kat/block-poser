@@ -1,9 +1,5 @@
 import { GraphQLClient } from 'graphql-request'
 
-const endpoint = `https://graphql.bitquery.io`;
+const algoNodeEndpoint = `https://mainnet.lab.algorpc.pro/graphql`;
 
-export const graphqlClient = new GraphQLClient(endpoint, {
-  headers: {
-    'X-Api-Key': import.meta.env.VITE_API_KEY,
-  },
-})
+export const graphqlClient = new GraphQLClient(algoNodeEndpoint);

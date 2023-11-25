@@ -15,8 +15,8 @@ const ListResults = () => {
           <For each={store.state.results.blockList} fallback={<div class="basis-1/3 flex py-2 justify-center">No Data</div>}>
             {(item, index) => (
               <div class="flex py-1">
-                <div class="basis-1/3 flex justify-center">{item?.height}</div>
-                <div class="basis-2/3 flex justify-center">{item?.timestamp?.time}</div>
+                <div class="basis-1/3 flex justify-center">{item?.round}</div>
+                <div class="basis-2/3 flex justify-center">{item?.realtime}</div>
               </div>
             )}
           </For>
