@@ -11,6 +11,7 @@ const SelectPreset= (props: any) => {
     const [currentDateYear, currentDateMonth, currentDateDay] = currentDate.split('-').map(n => parseInt(n));
     const currentDateObj = { year: currentDateYear, month: currentDateMonth - 1, day: currentDateDay };
     const currentTime = convertTime24to12(new Date().toISOString().slice(11,19));
+    const gmt8plus = '16:00:00';
     let dateTimeValues: any = [];
 
     const dateSubtraction = (numType: number, type: string) => {
@@ -48,6 +49,15 @@ const SelectPreset= (props: any) => {
         const genesisDate = "2019-06-11";
         const genesisTime = "00:00:00";
         dateTimeValues =  dateSet(genesisDate, genesisTime, currentDate, currentTime);
+        break;
+      case 'gov9':
+        dateTimeValues =  dateSet('2023-09-30', gmt8plus, currentDate, currentTime);
+        break;
+      case 'gov8':
+        dateTimeValues =  dateSet('2023-06-30', gmt8plus, '2023-09-30', gmt8plus); 
+        break;
+      case 'gov7':
+        dateTimeValues =  dateSet('2023-03-31', gmt8plus, '2023-06-30', gmt8plus); 
         break;
       default:
         dateTimeValues = Object.create({
@@ -109,6 +119,9 @@ const SelectPreset= (props: any) => {
         <option value="last30days">Last 30 days</option>
         <option value="lastyear">Last year</option>
         <option value="genesis">Genesis</option>
+        <option value="gov9">Governance 9</option>
+        <option value="gov8">Governacne 8</option>
+        <option value="gov7">Governacne 7</option>
       </select>
     </div>
   );
