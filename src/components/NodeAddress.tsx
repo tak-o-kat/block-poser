@@ -20,7 +20,7 @@ const NodeAddress = (props: any) => {
         type="text"
         name="AccountAddress"
         class={`${props.state.errors.accountAddress.error ? 'border-red-500 dark:border-red-500' : ''} h=[3rem] bg-white dark:bg-gray-700 disabled:opacity-100 border w-full rounded-lg p-3 pe-12 border-gray-300 dark:border-gray-600 outline-none`}
-        placeholder="Node Address"
+        placeholder="Node Address or NFD"
         maxlength={58}
       />
       <Show when={props.state.errors.accountAddress.error}>

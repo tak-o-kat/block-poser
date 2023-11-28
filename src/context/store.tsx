@@ -6,6 +6,8 @@ const store = {
     status: '',
     hasResults: false,
     accountAddress: '',
+    isNFD: false,
+    nfdAddress: '',
     startDateTime: '',
     endDateTime: '',
     blocksProposed: '',

@@ -5,6 +5,7 @@ import NodeAddress from './NodeAddress';
 import SelectPreset from './SelectPreset';
 import SolidDatePicker from './SolidDatePicker';
 import SolidTimePicker from './SolidTimePicker';
+import Toggle from './Toggle';
 
 import { useGlobalContext } from '../context/store';
 import { graphqlClient } from '../utils/graphqlClient';
@@ -12,8 +13,6 @@ import { getBlocksProposed, getBlocksList } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
 import { createStore } from 'solid-js/store';
 import { convertTime12to24, isoToDisplayDate, dateToIsoDate } from '../utils/helperFunctions';
-import Toggle from './Toggle';
-
 
 
 const BlockSearchForm = () => {
@@ -46,6 +45,8 @@ const BlockSearchForm = () => {
   // Store for all fields and their errors
   const [formState, setFormState] = createStore({
     fields: {
+      isNFD: false,
+      nfdAddress: '',
       accountAddress: '',
       preset: '',
       startDate: '',
@@ -94,24 +95,27 @@ const BlockSearchForm = () => {
     });
 
     // Check if any field has errors
-    if (!errorsDetected(formState, setFormState)) { //
+    if (!(await errorsDetected(formState, setFormState))) { 
       // Set the graphql variables
       const vars = {
-        addy: formState.fields.accountAddress,
+        addy: formState.fields.isNFD ? formState.fields.nfdAddress : formState.fields.accountAddress,
         start: `${formState.fields.startDate}T${convertTime12to24(formState.fields.startTime)}.000Z`,
         end: `${formState.fields.endDate}T${convertTime12to24(formState.fields.endTime)}.000Z`,
       }
-
       // Make graphql query algonode requests
       try {
         const accountResp: any = await fetch(`https://mainnet-api.algonode.cloud/v2/accounts/${vars.addy}?format=json&exclude=all`);
         const accountInfo: any = await accountResp.json();
+        
+        // if blocks proposed list is needed, we can make one call to the endpoint to get the block count and block list
         const blocksResp: any = await (formState.fields.getList ? graphqlClient.request(getBlocksList, vars) : graphqlClient.request(getBlocksProposed, vars));
         
         // set all the response data into the global context to display the results
         store.setState({
           results: {
             status: accountInfo.status,
+            isNFD: formState.fields.isNFD,
+            nfdAddress: formState.fields.isNFD ? formState.fields.nfdAddress : '',
             accountAddress: formState.fields.accountAddress,
             startDateTime: `${isoToDisplayDate(formState.fields.startDate)} ${convertTime12to24(formState.fields.startTime)} GMT`,
             endDateTime: `${isoToDisplayDate(formState.fields.endDate)} ${convertTime12to24(formState.fields.endTime)} GMT`,

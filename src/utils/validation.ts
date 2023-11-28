@@ -12,17 +12,27 @@ const setErrorState = (state: any, setState: any, name: string, obj: any) => {
   });
 }
 
+const removeNFDState = (state: any, setState: any) => {
+  setState({
+    ...state, 
+    fields: {
+      ...state.fields,
+      isNFD: false,
+    }
+  });
+}
 
+/** The following functions check the validity of form fields */
 const checkAccountAddress = (state: any, setState: any): boolean => {
   let emptyFieldError = false;
   let invalidAddressError = false;
   const emptyFieldMsg = "Node address required!";
-  const invalidAddressMsg = "Not a valid account address!";
+  const invalidAddressMsg = "Invalid account address or NFD!";
   const attributeName = "accountAddress";
 
   // check if the field is empty
   emptyFieldError = state.fields.accountAddress === '';
-  
+
   // check if the field has a valid address, skip if field is empty
   invalidAddressError = !emptyFieldError && !isValidAddress(state.fields.accountAddress);
 
@@ -33,24 +43,10 @@ const checkAccountAddress = (state: any, setState: any): boolean => {
   }
 
   setErrorState(state, setState, attributeName, fields);
+
+  // if there are no errors, then we can safely say this is not an NFD address and remove the flag
+  if (!invalidAddressError) removeNFDState(state, setState);
   return emptyFieldError || invalidAddressError;
-}
-
-const checkGovPeriod = (state: any, setState: any): boolean => {
-  let govPeriodError = false;
-  const noSelectErrorMsg = "Goverance period required!";
-  const attributeName = "govPeriod";
-
-  // Check if the select value is empty
-  govPeriodError = state.fields.govPeriod === '';
-
-  const fields = {
-    error: govPeriodError,
-    msg: govPeriodError ? noSelectErrorMsg : '',
-  }
-  
-  setErrorState(state, setState, attributeName, fields);
-  return govPeriodError;
 };
 
 
@@ -165,11 +161,59 @@ const checkDateTime = (state: any, setState: any) => {
   return runningBoolean;
 }
 
-export const errorsDetected = (state: any, setState: any): boolean => {
-  // run each check
-  const addressCheck = checkAccountAddress(state, setState);
-  //const govPeriodCheck = checkGovPeriod(state, setState);
-  const dateTimeCheck = checkDateTime(state, setState)
+const isValidNFD = async (state: any, setState: any): Promise<boolean> => {
+  const defaultParameters = 'view=tiny&poll=false&nocache=false'
+  return new Promise(async (resolve, reject) => {
+    try {
+      // make request to NFD address endpoint to quickly validate the NFD
+      const results = await fetch(`https://api.nf.domains/nfd/${state.fields.accountAddress}?${defaultParameters}`);
+      const data = await results.json();
+      // if it's a valid NFD add deposit address and turn the NFD flag on.
+      setState({
+        ...state, 
+        fields: {
+          ...state.fields,
+          isNFD: true,
+          nfdAddress: data.depositAccount
+        }
+      });
+      if (results.ok) {
+        resolve(true);
+       } else {
+        throw new Error("NFD is invalid")
+       };
+    } catch (e) {
+      // This means the NFD was invalid, so we need to update state to reflec that
+      reject(false);
+    };
+  });
+};
 
-  return addressCheck || dateTimeCheck;
+// basically a function that controls the flow of error detection for the form fields
+export const errorsDetected = async (state: any, setState: any) => {
+  const nfdRegex = new RegExp('^(.+\.algo)$', 'g');
+  const nfdSoftCheck = nfdRegex.test(state.fields.accountAddress);
+
+  let nfdError = false;
+  let addressError = false;
+
+  try {
+    // First do a soft check on the nfd, if it passes make a request to the NFD endpoint to validate.
+    nfdError = nfdSoftCheck && !(await isValidNFD(state, setState));
+
+    // If it's not a properly formatted NFD do a regular account address check
+    addressError = !nfdSoftCheck && checkAccountAddress(state, setState);
+
+    // if no nfd or address errors clear errors
+    if (!nfdError && !addressError) {
+      setErrorState(state, setState, "accountAddress", {error: false, msg: ''});
+    }
+  } catch (e) {
+    // this means the NFD endpoint returned an error and our NFD if formatted correctly, but is invalid
+    nfdError = true;
+    addressError = checkAccountAddress(state, setState);
+  }
+
+  const dateTimeError = checkDateTime(state, setState);
+  return (nfdError || addressError) || dateTimeError;
 }
