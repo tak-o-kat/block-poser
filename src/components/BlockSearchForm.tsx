@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js';
+import { Show, createSignal } from 'solid-js';
 import { PickerValue, TimeValue } from '@rnwonder/solid-date-picker';
 
 import NodeAddress from './NodeAddress';
@@ -54,6 +54,7 @@ const BlockSearchForm = () => {
       endDate: '',
       endTime: '',
       getList: false,
+      dump: false,
     },
     errors: {
       accountAddress: {
@@ -200,8 +201,30 @@ const BlockSearchForm = () => {
               >
                 {searching() ? 'Seaching...' : 'Search'}
               </button>
+             
             </div>
-
+            <div class="flex items-center justify-between">
+              <button
+                type="button"
+                class={`inline-block w-full rounded-lg !bg-blue-400 dark:!bg-blue-500 px-5 py-3 font-medium text-white sm:w-[12rem]`}
+                onclick={() => {
+                  setFormState({
+                    ...formState,
+                    fields: {
+                      ...formState.fields,
+                      dump: !formState.fields.dump
+                    }
+                  })
+                }}
+              >
+                Dump
+              </button>
+            </div>
+            <Show when={formState.fields.dump}>
+              <pre>
+                {JSON.stringify(formState.fields, null, 2)} 
+              </pre>
+            </Show>
           </fieldset>
         </form>
       </div>
