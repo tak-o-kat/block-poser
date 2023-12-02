@@ -113,7 +113,7 @@ const SelectPreset= (props: any) => {
         onChange={(e) => updateFields(e.currentTarget.value)}
         aria-placeholder="Select Preset"
         class={`rounded-lg bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 h-full w-full border-1 pl-2 outline-0 border-r-8 border-r-white dark:border-r-gray-700`}>
-        <option value=''>Default Values (Presets)</option>
+        <option selected value=''>Default Values (Presets)</option>
         <option value="last24hours">Last 24 hours</option>
         <option value="last7days">Last 7 days</option>
         <option value="last30days">Last 30 days</option>

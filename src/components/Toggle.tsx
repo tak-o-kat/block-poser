@@ -7,7 +7,8 @@ const Toggle = (props: any) => {
       class="relative flex h-8 w-12 cursor-pointer [-webkit-tap-highlight-color:_transparent]"
     >
       <input 
-        type="checkbox" 
+        type="checkbox"
+        checked={props.state.fields.getList}
         id="AcceptConditions" 
         class="peer sr-only"
         onChange={() => props.setState({
