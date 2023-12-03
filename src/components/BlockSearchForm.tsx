@@ -222,7 +222,8 @@ const BlockSearchForm = () => {
             </div>
             <Show when={formState.fields.dump}>
               <pre>
-                {JSON.stringify(formState.fields, null, 2)} 
+                {`type: ${JSON.stringify(window.performance.getEntriesByType("navigation")[0]?.type)}
+                ${JSON.stringify(formState.fields, null, 2)}`} 
               </pre>
             </Show>
           </fieldset>
