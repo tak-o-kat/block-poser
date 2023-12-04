@@ -1,4 +1,4 @@
-import { Show, createSignal } from 'solid-js';
+import { Show, createSignal, onMount } from 'solid-js';
 import { PickerValue, TimeValue } from '@rnwonder/solid-date-picker';
 
 import NodeAddress from './NodeAddress';
@@ -54,7 +54,6 @@ const BlockSearchForm = () => {
       endDate: '',
       endTime: '',
       getList: false,
-      dump: false,
     },
     errors: {
       accountAddress: {
@@ -80,9 +79,16 @@ const BlockSearchForm = () => {
     },
   });
 
+  // submit a request for blocks and stuff
   const submit = async (e: any) => {
     e.preventDefault();
     setSearching(true);
+    // if preset is selected recalculate the datetime fields
+    if (formState.fields.preset) {
+      const selectElement = document.getElementById("Select-Preset");
+      selectElement.dispatchEvent(new Event("change"));
+    }
+
     // set date and time values into the form state
     setFormState({
       ...formState,
@@ -155,7 +161,7 @@ const BlockSearchForm = () => {
             <div class="flex justify-center text-sm">
               <span class="font-semibold">Note</span>: All dates and times reflect GMT
             </div>
-            <fieldset disabled={formState.fields.preset} class={`${formState.fields.preset && 'opacity-60'}`}>
+            <fieldset disabled={formState.fields.preset} class={`${formState.fields.preset && 'opacity-60'} mx-auto mb-0 mt-4 sm:mt-8 space-y-4`}>
               <h4 class="flex justify-center">Start Date & Time</h4>
               <div class='flex flex-row gap-4 h-[3rem]'>
                 <SolidDatePicker 

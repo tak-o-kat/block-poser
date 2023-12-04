@@ -125,10 +125,12 @@ const SelectPreset= (props: SelectProps) => {
       value: {hour: hour, minute: minute, second: second}
     });
   };
+
   
   return (
     <div class="h-[3rem] border border-gray-300 dark:border-gray-600 rounded-lg">
       <select
+        id="Select-Preset"
         value={selection()}
         onChange={(e) => updateFields(e.currentTarget.value)}
         aria-placeholder="Select Preset"
