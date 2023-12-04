@@ -48,7 +48,7 @@ const BlockSearchForm = () => {
       isNFD: false,
       nfdAddress: '',
       accountAddress: '',
-      preset: '',
+      preset: false,
       startDate: '',
       startTime: '',
       endDate: '',
@@ -155,34 +155,36 @@ const BlockSearchForm = () => {
             <div class="flex justify-center text-sm">
               <span class="font-semibold">Note</span>: All dates and times reflect GMT
             </div>
-            <h4 class="flex justify-center">Start Date & Time</h4>
-            <div class='flex flex-row gap-4 h-[3rem]'>
-              <SolidDatePicker 
-                state={startDate}
-                setState={setStartDate}
-                errors={formState.errors.startDate}
-              />
-              <SolidTimePicker 
-                state={startTime}
-                setState={setStartTime}
-                errors={formState.errors.startTime}
-              />
-            </div>
-            <h4 class={`flex justify-center ${formState.errors.startDate.error || formState.errors.startTime.error ? 'pt-6 sm:pt-2' : ''}`}>
-              End Date & Time
-            </h4>
-            <div class='flex flex-row gap-4 h-[3rem]'>
-              <SolidDatePicker 
-                state={endDate}
-                setState={setEndDate}
-                errors={formState.errors.endDate}
-              />
-              <SolidTimePicker 
-                state={endTime}
-                setState={setEndTime}
-                errors={formState.errors.endTime}
-              />
-            </div>
+            <fieldset disabled={formState.fields.preset} class={`${formState.fields.preset && 'opacity-60'}`}>
+              <h4 class="flex justify-center">Start Date & Time</h4>
+              <div class='flex flex-row gap-4 h-[3rem]'>
+                <SolidDatePicker 
+                  state={startDate}
+                  setState={setStartDate}
+                  errors={formState.errors.startDate}
+                />
+                <SolidTimePicker 
+                  state={startTime}
+                  setState={setStartTime}
+                  errors={formState.errors.startTime}
+                />
+              </div>
+              <h4 class={`flex justify-center ${formState.errors.startDate.error || formState.errors.startTime.error ? 'pt-6 sm:pt-2' : ''}`}>
+                End Date & Time
+              </h4>
+              <div class='flex flex-row gap-4 h-[3rem]'>
+                <SolidDatePicker 
+                  state={endDate}
+                  setState={setEndDate}
+                  errors={formState.errors.endDate}
+                />
+                <SolidTimePicker 
+                  state={endTime}
+                  setState={setEndTime}
+                  errors={formState.errors.endTime}
+                />
+              </div>
+            </fieldset>
             <div class="flex flex-row items-center">
               <Toggle 
                 state={formState}
@@ -203,7 +205,7 @@ const BlockSearchForm = () => {
               </button>
              
             </div>
-            <div class="flex items-center justify-between">
+            {/* <div class="flex items-center justify-between">
               <button
                 type="button"
                 class={`inline-block w-full rounded-lg !bg-blue-400 dark:!bg-blue-500 px-5 py-3 font-medium text-white sm:w-[12rem]`}
@@ -222,10 +224,9 @@ const BlockSearchForm = () => {
             </div>
             <Show when={formState.fields.dump}>
               <pre>
-                {`type: ${JSON.stringify(window.performance.getEntriesByType("navigation")[0]?.type)}
-                ${JSON.stringify(formState.fields, null, 2)}`} 
+                {`type: ${JSON.stringify(window.performance.getEntriesByType("navigation")[0]?.type)}`}
               </pre>
-            </Show>
+            </Show> */}
           </fieldset>
         </form>
       </div>

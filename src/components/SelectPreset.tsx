@@ -1,9 +1,19 @@
-import { Show, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { DateMath } from "@rnwonder/solid-date-picker";
-import { convertTime24to12, isoToDisplayDate, dateToIsoDate } from '../utils/helperFunctions';
+import { convertTime24to12, isoToDisplayDate } from '../utils/helperFunctions';
 
-const SelectPreset= (props: any) => {
+type SelectProps = {
+  setStartDate: any,
+  setStartTime: any,
+  setEndDate: any,
+  setEndTime: any,
+  state: any,
+  setState: any
+}
+
+const SelectPreset= (props: SelectProps) => {
   const [selection, setSelection] = createSignal('');
+
   // Function to convert preset into all four date and time entries
   const updateFields = (value: string) => {
     setSelection(value);
@@ -32,7 +42,8 @@ const SelectPreset= (props: any) => {
       });
     }
 
-    switch (value) {
+    // Generate all four datetime fields depeneding on the preset selected
+    switch (selection()) {
       case 'last24hours':
         dateTimeValues = dateSubtraction(1, 'day');
         break;
@@ -66,9 +77,18 @@ const SelectPreset= (props: any) => {
           endDate: currentDate,
           startDate: ''
         });
-        break;
     };
 
+    // Block access to the datetime fields unless user selects custom
+    props.setState({
+      ...props.state,
+      fields: {
+        ...props.state.fields,
+        preset: selection() === '' ? false : true
+      }
+    });
+
+    // Set the start date
     let [year, month, day] = dateTimeValues.startDate.split('-').map((n: string) => parseInt(n));
     props.setStartDate({
       label: dateTimeValues.startDate ? isoToDisplayDate(dateTimeValues.startDate) : '',
@@ -113,7 +133,7 @@ const SelectPreset= (props: any) => {
         onChange={(e) => updateFields(e.currentTarget.value)}
         aria-placeholder="Select Preset"
         class={`rounded-lg bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 h-full w-full border-1 pl-2 outline-0 border-r-8 border-r-white dark:border-r-gray-700`}>
-        <option selected value=''>Default Values (Presets)</option>
+        <option selected value=''>Custom (Presets)</option>
         <option value="last24hours">Last 24 hours</option>
         <option value="last7days">Last 7 days</option>
         <option value="last30days">Last 30 days</option>
