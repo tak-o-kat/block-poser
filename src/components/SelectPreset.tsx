@@ -142,8 +142,8 @@ const SelectPreset= (props: SelectProps) => {
         <option value="lastyear">Last year</option>
         <option value="genesis">Genesis</option>
         <option value="gov9">Governance 9</option>
-        <option value="gov8">Governacne 8</option>
-        <option value="gov7">Governacne 7</option>
+        <option value="gov8">Governance 8</option>
+        <option value="gov7">Governance 7</option>
       </select>
     </div>
   );
