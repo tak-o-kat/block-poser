@@ -5,7 +5,7 @@ const ListResults = () => {
   const store: any = useGlobalContext();
 
   return (
-    <section class="mx-auto w-full p-4 text-gray-600 dark:text-gray-100">
+    <section class="mx-auto w-full p-4 bg-gray-100 dark:bg-gray-800">
       <Show when={store.state.results.getList}>
         <div class="mx-auto sm:max-w-3xl block items-center justify-center h-full text-gray-600 dark:text-gray-400 p-3">
           <div class="flex flex-row justify-center w-full">
