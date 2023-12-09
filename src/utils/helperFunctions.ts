@@ -14,7 +14,6 @@ export const convertTime12to24 = (time12h: string) => {
   return `${hours}:${minutes}:${seconds === undefined ? '00': seconds}`;
 };
 
-
 export const convertTime24to12 = (time24h: string) => {
   let [hours, minutes, seconds] = time24h.split(':');
   const modifier = (hours > '11' && hours < '24') ? 'PM' : 'AM'
@@ -49,7 +48,6 @@ export const getSplitTime = (date: string) => {
 export const saveSessionData = (state: any) => {
   sessionStorage.setItem('formState', JSON.stringify(state));
 }
-
 
 export const restoreSessionData = () => {
   return JSON.parse(sessionStorage.getItem('formState'));
