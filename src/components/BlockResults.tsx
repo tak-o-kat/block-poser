@@ -16,7 +16,7 @@ const BlockResults = () => {
               blocks
             </div>
           </div>
-          <div class="basis-3/4 px-2 h-full flex md:justify-center overflow-auto">
+          <div class="basis-3/4 px-2 h-full flex items-center md:justify-center overflow-auto">
             <div class="flex flex-col text-xs">
               <div class="  overflow-auto">
                 {store.state.results.accountAddress}
