@@ -293,8 +293,9 @@ const BlockSearchForm = () => {
               </button>
             </div>
             <Show when={formState.fields.dump}>
+              {`type: ${window.performance.getEntriesByType("navigation")[0]?.type}`}
               <pre>
-                {`type: ${window.performance.getEntriesByType("navigation")[0]?.type}`}
+                {`${JSON.stringify(restoreSessionData(), null, 2)}`}
               </pre>
             </Show>
           </fieldset>
