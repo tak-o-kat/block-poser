@@ -12,7 +12,15 @@ import { graphqlClient } from '../utils/graphqlClient';
 import { getBlocksProposed, getBlocksList } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
 import { createStore } from 'solid-js/store';
-import { convertTime12to24, isoToDisplayDate, dateToIsoDate } from '../utils/helperFunctions';
+import { 
+  convertTime12to24, 
+  isoToDisplayDate, 
+  dateToIsoDate, 
+  saveSessionData, 
+  restoreSessionData, 
+  getSplitDates,
+  getSplitTime
+} from '../utils/helperFunctions';
 
 
 const BlockSearchForm = () => {
@@ -49,11 +57,13 @@ const BlockSearchForm = () => {
       nfdAddress: '',
       accountAddress: '',
       preset: false,
+      presetType: '',
       startDate: '',
       startTime: '',
       endDate: '',
       endTime: '',
       getList: false,
+      dump: false
     },
     errors: {
       accountAddress: {
@@ -79,6 +89,7 @@ const BlockSearchForm = () => {
     },
   });
 
+
   // submit a request for blocks and stuff
   const submit = async (e: any) => {
     e.preventDefault();
@@ -103,6 +114,9 @@ const BlockSearchForm = () => {
 
     // Check if any field has errors
     if (!(await errorsDetected(formState, setFormState))) { 
+      // Save form state for the session to support Brave refreshing the page
+      saveSessionData(formState.fields);
+
       // Set the graphql variables
       const vars = {
         addy: formState.fields.isNFD ? formState.fields.nfdAddress : formState.fields.accountAddress,
@@ -140,6 +154,56 @@ const BlockSearchForm = () => {
     // Turn off searching flag
     setSearching(false);
   };
+
+  onMount(() => {
+    // check to see if a navigation of type back_forward was triggered
+    const entry = window.performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
+    const type: string = entry.type;
+    if (type === 'back_forward') {
+      // a back_forward was triggered restore the form state from session storage
+      const sessionForm = restoreSessionData();
+      
+      // custom form, restore all date/time fields
+      setFormState({
+        fields: sessionForm ? sessionForm : formState.fields
+      });
+
+      // Next we'll check if the restore type is preset or custom for date/time
+      if (sessionForm.preset) {
+        const selectElement = document.getElementById("Select-Preset") as HTMLSelectElement;
+        selectElement.value = sessionForm.presetType;
+        selectElement.dispatchEvent(new Event("change"));
+      } else {
+        // restore date/time state for start and end
+        let [year, month, day] = getSplitDates(sessionForm.startDate);
+        setStartDate({
+          label: isoToDisplayDate(sessionForm.startDate),
+          value: {
+            selectedDateObject: { year: year, month: month - 1, day: day, }
+          }
+        });
+        let [hour, minute, second] = getSplitTime(sessionForm.startTime);
+        setStartTime({
+          label: sessionForm.startTime,
+          value: { hour: hour, minute: minute, second: second ? second : 0 }
+        });
+  
+        [year, month, day] = getSplitDates(sessionForm.endDate);
+        setEndDate({
+          label: isoToDisplayDate(sessionForm.endDate),
+          value: {
+            selectedDateObject: { year: year, month: month - 1, day: day }
+          }
+        });
+
+        [hour, minute, second] = getSplitTime(sessionForm.endTime);
+        setEndTime({
+          label: sessionForm.endTime,
+          value: { hour: hour, minute: minute, second: second ? second : 0 }
+        });
+      };
+    }
+  });
 
   return (
     <section class="mx-auto w-full p-4 text-gray-600 dark:text-gray-100">
@@ -211,7 +275,7 @@ const BlockSearchForm = () => {
               </button>
              
             </div>
-            {/* <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between">
               <button
                 type="button"
                 class={`inline-block w-full rounded-lg !bg-blue-400 dark:!bg-blue-500 px-5 py-3 font-medium text-white sm:w-[12rem]`}
@@ -230,9 +294,9 @@ const BlockSearchForm = () => {
             </div>
             <Show when={formState.fields.dump}>
               <pre>
-                {`type: ${JSON.stringify(window.performance.getEntriesByType("navigation")[0]?.type)}`}
+                {`type: ${window.performance.getEntriesByType("navigation")[0]?.type}`}
               </pre>
-            </Show> */}
+            </Show>
           </fieldset>
         </form>
       </div>
