@@ -45,10 +45,14 @@ export const getSplitTime = (date: string) => {
 
 
 // function to save form state to local storage 
-export const saveSessionData = (state: any) => {
-  sessionStorage.setItem('formState', JSON.stringify(state));
+export const saveLocalData = (state: any) => {
+  localStorage.setItem('formState', JSON.stringify(state));
 }
 
-export const restoreSessionData = () => {
-  return JSON.parse(sessionStorage.getItem('formState'));
+export const restoreLocalData = () => {
+  return JSON.parse(localStorage.getItem('formState'));
+}
+
+export const deleteLocalData = () => {
+  localStorage.removeItem('formState');
 }

@@ -16,10 +16,11 @@ import {
   convertTime12to24, 
   isoToDisplayDate, 
   dateToIsoDate, 
-  saveSessionData, 
-  restoreSessionData, 
+  saveLocalData, 
+  restoreLocalData, 
   getSplitDates,
-  getSplitTime
+  getSplitTime,
+  deleteLocalData
 } from '../utils/helperFunctions';
 
 
@@ -114,8 +115,8 @@ const BlockSearchForm = () => {
 
     // Check if any field has errors
     if (!(await errorsDetected(formState, setFormState))) { 
-      // Save form state for the session to support Brave refreshing the page
-      saveSessionData(formState.fields);
+      // Save form state for the local to support Brave refreshing the page
+      saveLocalData(formState.fields);
 
       // Set the graphql variables
       const vars = {
@@ -160,48 +161,51 @@ const BlockSearchForm = () => {
     const entry = window.performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
     const type: string = entry.type;
     if (type === 'back_forward') {
-      // a back_forward was triggered restore the form state from session storage
-      const sessionForm = restoreSessionData();
+      // a back_forward was triggered restore the form state from local storage
+      const localForm = restoreLocalData();
       
       // custom form, restore all date/time fields
       setFormState({
-        fields: sessionForm ? sessionForm : formState.fields
+        fields: localForm ? localForm : formState.fields
       });
 
       // Next we'll check if the restore type is preset or custom for date/time
-      if (sessionForm.preset) {
+      if (localForm.preset) {
         const selectElement = document.getElementById("Select-Preset") as HTMLSelectElement;
-        selectElement.value = sessionForm.presetType;
+        selectElement.value = localForm.presetType;
         selectElement.dispatchEvent(new Event("change"));
       } else {
         // restore date/time state for start and end
-        let [year, month, day] = getSplitDates(sessionForm.startDate);
+        let [year, month, day] = getSplitDates(localForm.startDate);
         setStartDate({
-          label: isoToDisplayDate(sessionForm.startDate),
+          label: isoToDisplayDate(localForm.startDate),
           value: {
             selectedDateObject: { year: year, month: month - 1, day: day, }
           }
         });
-        let [hour, minute, second] = getSplitTime(sessionForm.startTime);
+        let [hour, minute, second] = getSplitTime(localForm.startTime);
         setStartTime({
-          label: sessionForm.startTime,
+          label: localForm.startTime,
           value: { hour: hour, minute: minute, second: second ? second : 0 }
         });
   
-        [year, month, day] = getSplitDates(sessionForm.endDate);
+        [year, month, day] = getSplitDates(localForm.endDate);
         setEndDate({
-          label: isoToDisplayDate(sessionForm.endDate),
+          label: isoToDisplayDate(localForm.endDate),
           value: {
             selectedDateObject: { year: year, month: month - 1, day: day }
           }
         });
 
-        [hour, minute, second] = getSplitTime(sessionForm.endTime);
+        [hour, minute, second] = getSplitTime(localForm.endTime);
         setEndTime({
-          label: sessionForm.endTime,
+          label: localForm.endTime,
           value: { hour: hour, minute: minute, second: second ? second : 0 }
         });
       };
+    } else {
+      // delete the local data
+      deleteLocalData();
     }
   });
 
@@ -295,7 +299,7 @@ const BlockSearchForm = () => {
             <Show when={formState.fields.dump}>
               {`type: ${window.performance.getEntriesByType("navigation")[0]?.type}`}
               <pre>
-                {`${JSON.stringify(restoreSessionData(), null, 2)}`}
+                {`${JSON.stringify(restoreLocalData(), null, 2)}`}
               </pre>
             </Show>
           </fieldset>
