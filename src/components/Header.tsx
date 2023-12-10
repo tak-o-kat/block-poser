@@ -14,7 +14,7 @@ const Header: Component = () => {
         <div class="flex flex-grow flex-shrink justify-center px-2">
           <div class="flex items-center font-semibold text-3xl">
             <PoserIcon />
-            <span class="">Posr<span class="text-xs text-teal-600">v0.5</span></span>
+            <span class="">Posr<span class="text-xs text-teal-600">v0.6</span></span>
           </div>
         </div>
         <div class="flex flex-grow flex-shrink justify-end text-right">

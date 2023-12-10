@@ -7,7 +7,12 @@ const Footer = () => {
       <div class="mx-auto max-w-screen-md flex flex-1 items-center justify-center">
         <div class="flex justify-between">
           <div class="flex justify-end text-teal-600 text-xs">
-            <a href="https://algonode.io" aria-label="Algonode" class="flex flex-row items-center">
+            <a 
+              href="https://algonode.io" 
+              target="_blank" 
+              aria-label="Algonode" 
+              class="flex flex-row items-center"
+            >
               <img class="h-[1.5rem]" src={algonode} alt="algo_node"></img>
               <span>powered by Algonode</span>
             </a>

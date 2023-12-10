@@ -40,7 +40,16 @@ const SelectPreset= (props: SelectProps) => {
         endDate: endDate,
         endTime: endTime,
       });
-    }
+    };
+
+    // update the presetType prop
+    props.setState({
+      ...props.state,
+      fields: {
+        ...props.state.fields,
+        presetType: value
+      }
+    });
 
     // Generate all four datetime fields depeneding on the preset selected
     switch (selection()) {

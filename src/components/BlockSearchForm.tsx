@@ -12,7 +12,16 @@ import { graphqlClient } from '../utils/graphqlClient';
 import { getBlocksProposed, getBlocksList } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
 import { createStore } from 'solid-js/store';
-import { convertTime12to24, isoToDisplayDate, dateToIsoDate } from '../utils/helperFunctions';
+import { 
+  convertTime12to24, 
+  isoToDisplayDate, 
+  dateToIsoDate, 
+  saveLocalData, 
+  restoreLocalData, 
+  getSplitDates,
+  getSplitTime,
+  deleteLocalData
+} from '../utils/helperFunctions';
 
 
 const BlockSearchForm = () => {
@@ -49,11 +58,13 @@ const BlockSearchForm = () => {
       nfdAddress: '',
       accountAddress: '',
       preset: false,
+      presetType: '',
       startDate: '',
       startTime: '',
       endDate: '',
       endTime: '',
       getList: false,
+      dump: false
     },
     errors: {
       accountAddress: {
@@ -79,6 +90,7 @@ const BlockSearchForm = () => {
     },
   });
 
+
   // submit a request for blocks and stuff
   const submit = async (e: any) => {
     e.preventDefault();
@@ -103,6 +115,9 @@ const BlockSearchForm = () => {
 
     // Check if any field has errors
     if (!(await errorsDetected(formState, setFormState))) { 
+      // Save form state for the local to support Brave refreshing the page
+      saveLocalData(formState.fields);
+
       // Set the graphql variables
       const vars = {
         addy: formState.fields.isNFD ? formState.fields.nfdAddress : formState.fields.accountAddress,
@@ -141,8 +156,61 @@ const BlockSearchForm = () => {
     setSearching(false);
   };
 
+  onMount(() => {
+    // check to see if a navigation of type back_forward was triggered
+    const entry = window.performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
+    const type: string = entry.type;
+    if (type === 'back_forward') {
+      // a back_forward was triggered restore the form state from local storage
+      const localForm = restoreLocalData();
+      
+      // custom form, restore all date/time fields
+      setFormState({
+        fields: localForm ? localForm : formState.fields
+      });
+
+      // Next we'll check if the restore type is preset or custom for date/time
+      if (localForm.preset) {
+        const selectElement = document.getElementById("Select-Preset") as HTMLSelectElement;
+        selectElement.value = localForm.presetType;
+        selectElement.dispatchEvent(new Event("change"));
+      } else {
+        // restore date/time state for start and end
+        let [year, month, day] = getSplitDates(localForm.startDate);
+        setStartDate({
+          label: isoToDisplayDate(localForm.startDate),
+          value: {
+            selectedDateObject: { year: year, month: month - 1, day: day, }
+          }
+        });
+        let [hour, minute, second] = getSplitTime(localForm.startTime);
+        setStartTime({
+          label: localForm.startTime,
+          value: { hour: hour, minute: minute, second: second ? second : 0 }
+        });
+  
+        [year, month, day] = getSplitDates(localForm.endDate);
+        setEndDate({
+          label: isoToDisplayDate(localForm.endDate),
+          value: {
+            selectedDateObject: { year: year, month: month - 1, day: day }
+          }
+        });
+
+        [hour, minute, second] = getSplitTime(localForm.endTime);
+        setEndTime({
+          label: localForm.endTime,
+          value: { hour: hour, minute: minute, second: second ? second : 0 }
+        });
+      };
+    } else {
+      // delete the local data
+      deleteLocalData();
+    }
+  });
+
   return (
-    <section class="mx-auto w-full p-4 text-gray-600 dark:text-gray-100">
+    <section class="mx-auto w-full p-4 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-100">
       <div class="mx-auto sm:max-w-3xl pb-5 border-b border-gray-600">
         <form onSubmit={submit} class=""> 
           <fieldset disabled={searching()} class="mx-auto mb-0 mt-4 sm:mt-8 space-y-4">
@@ -211,7 +279,7 @@ const BlockSearchForm = () => {
               </button>
              
             </div>
-            {/* <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between">
               <button
                 type="button"
                 class={`inline-block w-full rounded-lg !bg-blue-400 dark:!bg-blue-500 px-5 py-3 font-medium text-white sm:w-[12rem]`}
@@ -229,10 +297,11 @@ const BlockSearchForm = () => {
               </button>
             </div>
             <Show when={formState.fields.dump}>
+              {`type: ${window.performance.getEntriesByType("navigation")[0]?.type}`}
               <pre>
-                {`type: ${JSON.stringify(window.performance.getEntriesByType("navigation")[0]?.type)}`}
+                {`${JSON.stringify(restoreLocalData(), null, 2)}`}
               </pre>
-            </Show> */}
+            </Show>
           </fieldset>
         </form>
       </div>
