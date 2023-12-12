@@ -163,7 +163,7 @@ const BlockSearchForm = () => {
       // a back_forward was triggered restore the form state from local storage
       const localForm = restoreLocalData();
       
-      // custom form, restore all date/time fields
+      // restore the form state
       setFormState({
         fields: localForm ? localForm : formState.fields
       });
@@ -203,7 +203,7 @@ const BlockSearchForm = () => {
         });
       };
     } else {
-      // delete the local data
+      // delete the local state data if not back_forward type
       deleteLocalData();
     }
   });
