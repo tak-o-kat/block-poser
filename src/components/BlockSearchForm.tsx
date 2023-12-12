@@ -276,8 +276,31 @@ const BlockSearchForm = () => {
                 px-5 py-3 font-medium text-white sm:w-[12rem]`}
               >
                 {searching() ? 'Seaching...' : 'Search'}
+              </button>          
+            </div>
+            {/* <div class="flex items-center justify-between">
+              <button
+                type="button"
+                class={`inline-block w-full rounded-lg !bg-blue-400 dark:!bg-blue-500 px-5 py-3 font-medium text-white sm:w-[12rem]`}
+                onclick={() => {
+                  setFormState({
+                    ...formState,
+                    fields: {
+                      ...formState.fields,
+                      dump: !formState.fields.dump
+                    }
+                  })
+                }}
+              >
+                Dump
               </button>
             </div>
+            <Show when={formState.fields.dump}>
+              {`type: ${window.performance.getEntriesByType("navigation")[0]?.type}`}
+              <pre>
+                {`${JSON.stringify(restoreLocalData(), null, 2)}`}
+              </pre>
+            </Show> */}
           </fieldset>
         </form>
       </div>

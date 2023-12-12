@@ -6,7 +6,7 @@ import AlgorandLogo from './AlgorandLogo';
 
 const Header: Component = () => {
   return (
-    <header class="bg-gray-200 dark:bg-gray-900 px-4 py-5 text-gray-700 dark:text-gray-300">
+    <header class="bg-gray-200 dark:bg-gray-900 px-4 py-5 text-gray-700 dark:text-gray-400">
       <div class="mx-auto max-w-screen-md flex items-center justify-between">
         <div class="flex flex-grow flex-shrink justify-start ">
           <AlgorandLogo />
@@ -14,7 +14,7 @@ const Header: Component = () => {
         <div class="flex flex-grow flex-shrink justify-center px-2">
           <div class="flex items-center font-semibold text-3xl">
             <PoserIcon />
-            <span class="">Posr<span class="text-xs text-teal-600">v0.6</span></span>
+            <span class="">Posr<span class="text-xs text-teal-600">v0.7</span></span>
           </div>
         </div>
         <div class="flex flex-grow flex-shrink justify-end text-right">
