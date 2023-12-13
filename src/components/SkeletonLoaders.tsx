@@ -9,8 +9,8 @@ export const SkeletonBlockResult: Component = () => {
     >
       <div class="basis-1/4 px-2 h-[6rem] w-full flex items-center justify-center">
         <div class="flex flex-col items-center justify-center h-full w-full overflow-hidden">
-          <div class="h-[2.5rem] bg-gray-200 rounded-full dark:bg-gray-600 w-[75px] mb-2.5"></div>
-          <div class="h-4 bg-gray-200 rounded-full dark:bg-gray-600 w-[75px] mb-2.5"></div>
+          <div class="h-[2.5rem] bg-gray-200 rounded-full dark:bg-gray-600 md:w-[100px] w-[75px] mb-2.5"></div>
+          <div class="h-4 bg-gray-200 rounded-full dark:bg-gray-600 md:w-[100px] w-[75px] mb-2.5"></div>
         </div>
       </div>
       <div class="basis-3/4 px-2 flex items-center justify-center h-full w-full overflow-hidden">

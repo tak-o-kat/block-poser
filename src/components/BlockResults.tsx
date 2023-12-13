@@ -12,7 +12,7 @@ const BlockResults = () => {
       </Show>
       <Show when={store.state.results.hasResults && !store.state.results.isLoading}>
         <div class="mx-auto sm:max-w-3xl flex items-center justify-center h-full rounded-lg text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 p-3">
-          <div class="basis-1/4 p-2 h-[6rem] w-full flex flex-col items-center md:justify-center">
+          <div class="basis-1/4 p-2 h-[6rem] w-full flex flex-col items-center justify-center">
             <div class="text-4xl md:text-5xl font-extrabold text-blue-600">
               {store.state.results.blocksProposed}
             </div>
