@@ -24,7 +24,7 @@ const ListResults = () => {
             }
           >
             {(item, index) => (
-              <div class="flex py-1.5 text-lg">
+              <div class="flex py-1 text-lg">
                 <div class="basis-1/3 flex justify-center">
                   <a
                     href={`https://algoexplorer.io/block/${item?.round}`}
