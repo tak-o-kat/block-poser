@@ -118,6 +118,14 @@ const BlockSearchForm = () => {
       // Save form state for the local to support Brave refreshing the page
       saveLocalData(formState.fields);
 
+      // set global state to loading
+      store.setState({
+        results: {
+          ...store.state.results,
+          isLoading: true,
+        }
+      })
+
       // Set the graphql variables
       const vars = {
         addy: formState.fields.isNFD ? formState.fields.nfdAddress : formState.fields.accountAddress,
@@ -145,6 +153,7 @@ const BlockSearchForm = () => {
             hasResults: true,
             getList: formState.fields.getList,
             blockList: blocksResp?.blocks?.nodes || [],
+            isLoading: false,
           }
         });
       } catch (error) {

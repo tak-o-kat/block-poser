@@ -1,5 +1,6 @@
 import { For, Show } from 'solid-js';
 import { useGlobalContext } from '../context/store';
+import { SkeletonBlockResult } from './SkeletonLoaders';
 
 const ListResults = () => {
   const store: any = useGlobalContext();

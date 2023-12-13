@@ -4,6 +4,7 @@ import { createContext, useContext } from 'solid-js';
 const store = {
   results: {
     status: '',
+    isLoading: false,
     hasResults: false,
     accountAddress: '',
     isNFD: false,
