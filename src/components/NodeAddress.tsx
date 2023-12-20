@@ -1,7 +1,13 @@
 import { Show } from 'solid-js';
+import { SetStoreFunction } from "solid-js/store";
+import { FormState } from './BlockSearchForm';
 
-const NodeAddress = (props: any) => {
+type NodeAddressProps = {
+  state: FormState;
+  setState: SetStoreFunction<FormState>;
+};
 
+const NodeAddress = (props: NodeAddressProps) => {
   const updateState = (address: string) => {
     props.setState({ 
       fields: {

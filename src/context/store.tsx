@@ -1,7 +1,24 @@
 import { createStore } from "solid-js/store";
 import { createContext, useContext } from 'solid-js';
 
-const store = {
+export type GlobalStore = {
+  results: {
+    status: string,
+    isLoading: boolean,
+    hasResults: boolean,
+    accountAddress: string,
+    isNFD: boolean,
+    nfdAddress: string,
+    startDateTime: string,
+    endDateTime: string,
+    blocksProposed: string,
+    getList: boolean,
+    blockList: any,
+  }
+}
+
+
+const store: GlobalStore = {
   results: {
     status: '',
     isLoading: false,
@@ -15,7 +32,6 @@ const store = {
     getList: false,
     blockList: [],
   },
-  theme: null,
 }
 
 const GlobalContext = createContext();

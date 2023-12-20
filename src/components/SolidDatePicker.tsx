@@ -1,7 +1,16 @@
-import { Show } from 'solid-js';
-import DatePicker from '@rnwonder/solid-date-picker';
+import { Show, Accessor, Setter } from 'solid-js';
+import DatePicker, { PickerValue, TimeValue } from '@rnwonder/solid-date-picker';
 
-const SolidDatePicker = (props: any) => {
+type DatePickerProps = {
+  state: Accessor<PickerValue>;
+  setState: Setter<PickerValue>;
+  errors: {
+    error: boolean;
+    msg: string;
+  };
+};
+
+const SolidDatePicker = (props: DatePickerProps) => {
   const minDate = { year: 2019, month: 5, day: 11 };
   const [year, month, day] = (new Date().toISOString().slice(0, 10)).split('-').map((n) => parseInt(n));
   const maxDate = { year: year, month: month - 1, day: day };

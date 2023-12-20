@@ -1,15 +1,17 @@
-import { createSignal } from "solid-js";
-import { DateMath } from "@rnwonder/solid-date-picker";
+import { createSignal, Setter, startTransition } from "solid-js";
+import { SetStoreFunction } from "solid-js/store";
+import { FormState } from "./BlockSearchForm";
+import { DateMath, PickerValue, TimeValue } from "@rnwonder/solid-date-picker";
 import { convertTime24to12, isoToDisplayDate } from '../utils/helperFunctions';
 
 type SelectProps = {
-  setStartDate: any,
-  setStartTime: any,
-  setEndDate: any,
-  setEndTime: any,
-  state: any,
-  setState: any
-}
+  setStartDate: Setter<PickerValue>;
+  setStartTime: Setter<TimeValue>;
+  setEndDate: Setter<PickerValue>;
+  setEndTime: Setter<TimeValue>;
+  state: FormState;
+  setState: SetStoreFunction<FormState>;
+};
 
 const SelectPreset= (props: SelectProps) => {
   const [selection, setSelection] = createSignal('');
@@ -99,9 +101,10 @@ const SelectPreset= (props: SelectProps) => {
 
     // Set the start date
     let [year, month, day] = dateTimeValues.startDate.split('-').map((n: string) => parseInt(n));
+    const startDateValue = 
     props.setStartDate({
       label: dateTimeValues.startDate ? isoToDisplayDate(dateTimeValues.startDate) : '',
-      value: !year ? '' : {
+      value: {
         selectedDateObject: {
           year: year ? year : 0, 
           month: month ? month - 1 : 0 , 

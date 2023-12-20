@@ -1,4 +1,4 @@
-import { Show, createSignal, onMount } from 'solid-js';
+import { createSignal, onMount } from 'solid-js';
 import { PickerValue, TimeValue } from '@rnwonder/solid-date-picker';
 
 import NodeAddress from './NodeAddress';
@@ -7,7 +7,7 @@ import SolidDatePicker from './SolidDatePicker';
 import SolidTimePicker from './SolidTimePicker';
 import Toggle from './Toggle';
 
-import { useGlobalContext } from '../context/store';
+import { useGlobalContext, GlobalStore } from '../context/store';
 import { graphqlClient } from '../utils/graphqlClient';
 import { getBlocksProposed, getBlocksList } from '../utils/graphqlQueries';
 import { errorsDetected } from '../utils/validation';
@@ -22,6 +22,43 @@ import {
   getSplitTime,
   deleteLocalData
 } from '../utils/helperFunctions';
+
+export type FormState = {
+  fields: {
+    isNFD: boolean;
+    nfdAddress: string;
+    accountAddress: string;
+    preset: boolean;
+    presetType: string
+    startDate: string;
+    startTime: string;
+    endDate: string;
+    endTime: string;
+    getList: boolean;
+  };
+  errors: {
+    accountAddress: {
+      error: boolean;
+      msg: string;
+    };
+    startDate: {
+      error: boolean;
+      msg: string;
+    };
+    startTime: {
+      error: boolean;
+      msg: string;
+    };
+    endDate: {
+      error: boolean;
+      msg: string;
+    };
+    endTime: {
+      error: boolean;
+      msg: string;
+    };
+  };
+};
 
 
 const BlockSearchForm = () => {
@@ -52,7 +89,7 @@ const BlockSearchForm = () => {
   });
 
   // Store for all fields and their errors
-  const [formState, setFormState] = createStore({
+  const [formState, setFormState] = createStore<FormState>({
     fields: {
       isNFD: false,
       nfdAddress: '',

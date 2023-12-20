@@ -1,7 +1,16 @@
-import { Show } from 'solid-js';
-import { TimePicker } from '@rnwonder/solid-date-picker';
+import { Show, Accessor, Setter } from 'solid-js';
+import { TimePicker, TimeValue } from '@rnwonder/solid-date-picker';
 
-const SolidTimePicker = (props: any) => {
+type TimePickerProps = {
+  state: Accessor<TimeValue>;
+  setState: Setter<TimeValue>;
+  errors: {
+    error: boolean;
+    msg: string;
+  };
+};
+
+const SolidTimePicker = (props: TimePickerProps) => {
   const timeInputClasses = "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 outline-none h-11 !pl-8 cursor-pointer";
   const wrapperClass = "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 font-bold"
   const btnClass = "text-gray-700 dark:text-gray-100 font-bold"

@@ -1,6 +1,5 @@
 import { Component } from "solid-js"
 
-
 export const SkeletonBlockResult: Component = () => {
   return (
     <div
