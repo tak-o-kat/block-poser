@@ -90,7 +90,7 @@ const SelectPreset= (props: SelectProps) => {
         });
     };
 
-    // Block access to the datetime fields unless user selects custom
+    // Block the access to the datetime fields unless user selects custom
     props.setState({
       ...props.state,
       fields: {
@@ -100,26 +100,25 @@ const SelectPreset= (props: SelectProps) => {
     });
 
     // Set the start date
-    let [year, month, day] = dateTimeValues.startDate.split('-').map((n: string) => parseInt(n));
-    const startDateValue = 
+    let [year, month, day] = dateTimeValues.startDate.split('-').map((n: string) => parseInt(n)); 
     props.setStartDate({
-      label: dateTimeValues.startDate ? isoToDisplayDate(dateTimeValues.startDate) : '',
-      value: {
+      label: dateTimeValues.startDate ? isoToDisplayDate(dateTimeValues.startDate) : "",
+      value: !year && !month && !day ? {}: {
         selectedDateObject: {
-          year: year ? year : 0, 
-          month: month ? month - 1 : 0 , 
-          day: day ? day : 0
-        }
-      }
+          year: year,
+          month: month - 1,
+          day: day,
+        },
+      },
     });
     
     let [hour, minute, second] = dateTimeValues.startTime.split(':').map((n: string) => parseInt(n));
     props.setStartTime({
       label: dateTimeValues.startTime,
-      value: {
-        hour: hour ? hour : 0, 
-        minute: minute ? minute : 0, 
-        second: second ? second : 0,
+      value: !hour && !minute && !second ? {} : {
+        hour: hour, 
+        minute: minute, 
+        second: second,
       }
     });
 
