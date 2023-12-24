@@ -3,20 +3,19 @@ import { createContext, useContext } from 'solid-js';
 
 export type GlobalStore = {
   results: {
-    status: string,
-    isLoading: boolean,
-    hasResults: boolean,
-    accountAddress: string,
-    isNFD: boolean,
-    nfdAddress: string,
-    startDateTime: string,
-    endDateTime: string,
-    blocksProposed: string,
-    getList: boolean,
-    blockList: any,
-  }
-}
-
+    status: string;
+    isLoading: boolean;
+    hasResults: boolean;
+    accountAddress: string;
+    isNFD: boolean;
+    nfdAddress: string;
+    startDateTime: string;
+    endDateTime: string;
+    blocksProposed: string;
+    getList: boolean;
+    blockList: [];
+  };
+};
 
 const store: GlobalStore = {
   results: {
@@ -36,7 +35,7 @@ const store: GlobalStore = {
 
 const GlobalContext = createContext();
 
-export function GlobalContextProvider(props: any) {
+export function GlobalContextProvider(props) {
   const [state, setState] = createStore(store);
 
   return (
