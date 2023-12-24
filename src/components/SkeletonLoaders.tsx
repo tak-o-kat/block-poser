@@ -1,6 +1,6 @@
-import { Component } from "solid-js"
+import { For } from "solid-js"
 
-export const SkeletonBlockResult: Component = () => {
+export const SkeletonBlockResult = () => {
   return (
     <div
       role="status"
@@ -20,6 +20,26 @@ export const SkeletonBlockResult: Component = () => {
           <div class="h-3 bg-gray-200 rounded-full dark:bg-gray-600 w-[200px] mb-1.5"></div>
         </div>
       </div>
+    </div>
+  );
+}
+
+export const SkeletonListResult = () => {
+  const listLength = new Array(3);
+  return (
+    <div class="animate-pulse p-1 text-gray-600 dark:text-gray-400">
+      <For each={listLength}>
+        {(item) => (
+          <div class="flex py-1 text-lg">
+            <div class="basis-1/3 flex justify-center">
+              <div class="h-5 bg-gray-200 rounded-full dark:bg-gray-600 w-[90px] mb-1.5"></div>
+            </div>
+            <div class="basis-2/3 flex justify-center">
+              <div class="h-5 bg-gray-200 rounded-full dark:bg-gray-600 w-[175px] mb-1.5"></div>
+            </div>
+          </div>
+        )}
+      </For>
     </div>
   );
 }
