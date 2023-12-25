@@ -1,8 +1,8 @@
-import { createSignal, Setter, startTransition } from "solid-js";
+import { createSignal, Setter, For } from "solid-js";
 import { SetStoreFunction } from "solid-js/store";
 import { FormState } from "./BlockSearchForm";
 import { DateMath, PickerValue, TimeValue } from "@rnwonder/solid-date-picker";
-import { convertTime24to12, isoToDisplayDate } from '../utils/helperFunctions';
+import { convertTime24to12, getGovernanceList, isoToDisplayDate } from '../utils/helperFunctions';
 
 type SelectProps = {
   setStartDate: Setter<PickerValue>;
@@ -15,6 +15,10 @@ type SelectProps = {
 
 const SelectPreset= (props: SelectProps) => {
   const [selection, setSelection] = createSignal('');
+
+  // Generate dynamic governance preset list
+  const govPeriodObject = getGovernanceList();
+
 
   // Function to convert preset into all four date and time entries
   const updateFields = (value: string) => {
@@ -52,41 +56,75 @@ const SelectPreset= (props: SelectProps) => {
         presetType: value
       }
     });
-
     // Generate all four datetime fields depeneding on the preset selected
     switch (selection()) {
-      case 'last24hours':
-        dateTimeValues = dateSubtraction(1, 'day');
+      case "last24hours":
+        dateTimeValues = dateSubtraction(1, "day");
         break;
-      case 'last7days':
-        dateTimeValues = dateSubtraction(7, 'day');
+      case "last7days":
+        dateTimeValues = dateSubtraction(7, "day");
         break;
-      case 'last30days':
-        dateTimeValues = dateSubtraction(30, 'day');
+      case "last30days":
+        dateTimeValues = dateSubtraction(30, "day");
         break;
-      case 'lastyear':
-        dateTimeValues =  dateSubtraction(1, 'year');
+      case "lastyear":
+        dateTimeValues = dateSubtraction(1, "year");
         break;
-      case 'genesis':
+      case "genesis":
         const genesisDate = "2019-06-11";
         const genesisTime = "00:00:00";
-        dateTimeValues =  dateSet(genesisDate, genesisTime, currentDate, currentTime);
+        dateTimeValues = dateSet(
+          genesisDate,
+          genesisTime,
+          currentDate,
+          currentTime
+        );
         break;
-      case 'gov9':
-        dateTimeValues =  dateSet('2023-09-30', gmt8plus, currentDate, currentTime);
+      case `gov${govPeriodObject.govPeriods}`:
+        const govStartDate3 = govPeriodObject.govPeriodList[3].startDate;
+        dateTimeValues = dateSet(
+          govStartDate3,
+          gmt8plus,
+          currentDate,
+          currentTime
+        );
         break;
-      case 'gov8':
-        dateTimeValues =  dateSet('2023-06-30', gmt8plus, '2023-09-30', gmt8plus); 
+      case `gov${govPeriodObject.govPeriods - 1}`:
+        const govStartDate2 = govPeriodObject.govPeriodList[2].startDate;
+        const govEndDate2 = govPeriodObject.govPeriodList[2].endDate;
+        dateTimeValues = dateSet(
+          govStartDate2,
+          gmt8plus,
+          govEndDate2,
+          gmt8plus
+        );
         break;
-      case 'gov7':
-        dateTimeValues =  dateSet('2023-03-31', gmt8plus, '2023-06-30', gmt8plus); 
+      case `gov${govPeriodObject.govPeriods - 2}`:
+        const govStartDate1 = govPeriodObject.govPeriodList[1].startDate;
+        const govEndDate1 = govPeriodObject.govPeriodList[1].endDate;
+        dateTimeValues = dateSet(
+          govStartDate1,
+          gmt8plus,
+          govEndDate1,
+          gmt8plus
+        );
+        break;
+      case `gov${govPeriodObject.govPeriods - 3}`:
+        const govStartDate0 = govPeriodObject.govPeriodList[0].startDate;
+        const govEndDate0 = govPeriodObject.govPeriodList[0].endDate;
+        dateTimeValues = dateSet(
+          govStartDate0,
+          gmt8plus,
+          govEndDate0,
+          gmt8plus
+        );
         break;
       default:
         dateTimeValues = Object.create({
-          startTime: '',
+          startTime: "",
           endTime: currentTime,
           endDate: currentDate,
-          startDate: ''
+          startDate: "",
         });
     };
 
@@ -152,9 +190,17 @@ const SelectPreset= (props: SelectProps) => {
         <option value="last30days">Last 30 days</option>
         <option value="lastyear">Last year</option>
         <option value="genesis">Genesis</option>
-        <option value="gov9">Governance 9</option>
-        <option value="gov8">Governance 8</option>
-        <option value="gov7">Governance 7</option>
+        <For 
+          each={govPeriodObject.govPeriodList}
+        >
+          {(_, index) => (
+            <option
+              value={`gov${govPeriodObject.govPeriods - index()}`}
+            >{
+              `Governance ${govPeriodObject.govPeriods - index()}`}
+            </option>
+          )}
+        </For>
       </select>
     </div>
   );
