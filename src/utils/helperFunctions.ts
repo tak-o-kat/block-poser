@@ -1,4 +1,3 @@
-import { DateMath, utils } from "@rnwonder/solid-date-picker";
 
 // helper function to convert 12 hour time to 24 hour time
 export const convertTime12to24 = (time12h: string) => {
@@ -60,13 +59,14 @@ export const deleteLocalData = () => {
   localStorage.removeItem("formState");
 };
 
+// function to get the current governance period date, based on Singapore time
 const getGovDate = () => {
   const currentDate = new Date();
   let date = currentDate.toISOString().slice(0, 10);
   const hour = parseInt(currentDate.toISOString().slice(11, 13));
 
-  // Need to make a check on 12-31 @ 16:00 GMT time to see if the new year has happened
-  let [year, month, day] = date.split("-").map((n: string) => parseInt(n));
+  // Need to make a check on 12-31 @ 16:00 GMT (8 hour window) time to see if the new year has happened
+  let [year, month, day] = getSplitDates(date);
   if (month === 12 && day === 31 && hour >= 16) {
     date = `${++year}-${'01'}-${'01'}`;
   }
@@ -77,6 +77,7 @@ const getGovDate = () => {
 // This function will generate all the governance periods from the inital governance date
 export const getGovernanceList = () => {
   const GOV_YEARLY_CHANGE_OVER_LIST = [
+    // start with Sept - Dec as this was the first gov period
     {
       start: "-09-30",
       end: "-12-31",
@@ -97,21 +98,25 @@ export const getGovernanceList = () => {
 
   const initGovYear = "2021";
   const currentGovDate = getGovDate();
-  const [year, month, day] = currentGovDate.split("-").map((n: string) => parseInt(n));
+  const [year, month, day] = getSplitDates(currentGovDate);
 
-  // generate a list of all the governance periods starting with the initial year
-  let firtGovPeriod = 1 // takes into consideration Oct - Dec of 2021
+  let firtGovPeriod = 1; // takes into consideration Oct - Dec of 2021
   const yearsActive = year - (parseInt(initGovYear) + 1);
 
   // Get the number of quarters that have currently happened in the current year
   const quartersThisYear = Math.ceil((month / 12) * 4);
 
-  // Add up the years and current months, excluding the the first governance
+  // Add up the years and current months
   const govPeriods = firtGovPeriod + yearsActive * 4 + quartersThisYear;
   const govPeriodList = [];
   let changeOverYear = parseInt(initGovYear);
+
+  // generate a list of all the governance periods starting with the initial year
   for (let i = 0; i < govPeriods; i++) {
+   
+    // make an index using modulus to cycle through GOV_YEARLY_CHANGE_OVER_LIST
     let changeOverIndex = i % 4;
+    
     // determine the year based on GOV_YEARLY_CHANGE_OVER_LIST
     changeOverYear =
       changeOverIndex === 1 ? changeOverYear + 1 : changeOverYear;
@@ -123,10 +128,10 @@ export const getGovernanceList = () => {
       endDate: `${changeOverYear}${GOV_YEARLY_CHANGE_OVER_LIST[changeOverIndex].end}`,
     });
   }
-
+  // get the total gov periods and return the last 4
   const govPeriodObject = {
     govPeriods: govPeriods,
     govPeriodList: govPeriodList.slice(-4),
-  }
+  };
   return govPeriodObject;
 };

@@ -2,7 +2,12 @@ import { createSignal, Setter, For } from "solid-js";
 import { SetStoreFunction } from "solid-js/store";
 import { FormState } from "./BlockSearchForm";
 import { DateMath, PickerValue, TimeValue } from "@rnwonder/solid-date-picker";
-import { convertTime24to12, getGovernanceList, isoToDisplayDate } from '../utils/helperFunctions';
+import {
+  convertTime24to12,
+  getGovernanceList,
+  isoToDisplayDate,
+  getSplitDates,
+} from "../utils/helperFunctions";
 
 type SelectProps = {
   setStartDate: Setter<PickerValue>;
@@ -18,6 +23,7 @@ const SelectPreset= (props: SelectProps) => {
 
   // Generate dynamic governance preset list
   const govPeriodObject = getGovernanceList();
+  const govPeriodSize = govPeriodObject.govPeriodList.length;
 
 
   // Function to convert preset into all four date and time entries
@@ -81,7 +87,8 @@ const SelectPreset= (props: SelectProps) => {
         );
         break;
       case `gov${govPeriodObject.govPeriods}`:
-        const govStartDate3 = govPeriodObject.govPeriodList[3].startDate;
+        const govStartDate3 =
+          govPeriodObject.govPeriodList[govPeriodSize - 1].startDate;
         dateTimeValues = dateSet(
           govStartDate3,
           gmt8plus,
@@ -90,8 +97,10 @@ const SelectPreset= (props: SelectProps) => {
         );
         break;
       case `gov${govPeriodObject.govPeriods - 1}`:
-        const govStartDate2 = govPeriodObject.govPeriodList[2].startDate;
-        const govEndDate2 = govPeriodObject.govPeriodList[2].endDate;
+        const govStartDate2 =
+          govPeriodObject.govPeriodList[govPeriodSize - 2].startDate;
+        const govEndDate2 =
+          govPeriodObject.govPeriodList[govPeriodSize - 2].endDate;
         dateTimeValues = dateSet(
           govStartDate2,
           gmt8plus,
@@ -100,8 +109,10 @@ const SelectPreset= (props: SelectProps) => {
         );
         break;
       case `gov${govPeriodObject.govPeriods - 2}`:
-        const govStartDate1 = govPeriodObject.govPeriodList[1].startDate;
-        const govEndDate1 = govPeriodObject.govPeriodList[1].endDate;
+        const govStartDate1 =
+          govPeriodObject.govPeriodList[govPeriodSize - 3].startDate;
+        const govEndDate1 =
+          govPeriodObject.govPeriodList[govPeriodSize - 3].endDate;
         dateTimeValues = dateSet(
           govStartDate1,
           gmt8plus,
@@ -110,8 +121,10 @@ const SelectPreset= (props: SelectProps) => {
         );
         break;
       case `gov${govPeriodObject.govPeriods - 3}`:
-        const govStartDate0 = govPeriodObject.govPeriodList[0].startDate;
-        const govEndDate0 = govPeriodObject.govPeriodList[0].endDate;
+        const govStartDate0 =
+          govPeriodObject.govPeriodList[govPeriodSize - 4].startDate;
+        const govEndDate0 =
+          govPeriodObject.govPeriodList[govPeriodSize - 4].endDate;
         dateTimeValues = dateSet(
           govStartDate0,
           gmt8plus,
@@ -137,8 +150,8 @@ const SelectPreset= (props: SelectProps) => {
       }
     });
 
-    // Set the start date
-    let [year, month, day] = dateTimeValues.startDate.split('-').map((n: string) => parseInt(n)); 
+    // Set the start and end datetimes
+    let [year, month, day] = getSplitDates(dateTimeValues.startDate);
     props.setStartDate({
       label: dateTimeValues.startDate ? isoToDisplayDate(dateTimeValues.startDate) : "",
       value: !year && !month && !day ? {}: {
@@ -150,7 +163,7 @@ const SelectPreset= (props: SelectProps) => {
       },
     });
     
-    let [hour, minute, second] = dateTimeValues.startTime.split(':').map((n: string) => parseInt(n));
+    let [hour, minute, second] = getSplitDates(dateTimeValues.startTime);
     props.setStartTime({
       label: dateTimeValues.startTime,
       value: !hour && !minute && !second ? {} : {
@@ -160,7 +173,7 @@ const SelectPreset= (props: SelectProps) => {
       }
     });
 
-    [year, month, day] = dateTimeValues.endDate.split('-').map((n: string) => parseInt(n));
+    [year, month, day] = getSplitDates(dateTimeValues.endDate);
     props.setEndDate({
       label: isoToDisplayDate(dateTimeValues.endDate),
       value: {
@@ -168,7 +181,7 @@ const SelectPreset= (props: SelectProps) => {
       }
     });
 
-    [hour, minute, second] = dateTimeValues.endTime.split(':').map((n: string) => parseInt(n));
+    [hour, minute, second] = getSplitDates(dateTimeValues.endTime);
     props.setEndTime({
       label: dateTimeValues.endTime,
       value: {hour: hour, minute: minute, second: second}
