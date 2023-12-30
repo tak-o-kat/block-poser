@@ -17,8 +17,8 @@ const ListResults = () => {
               DateTime
             </div>
           </div>
-          <Show 
-            when={!store.state.results.isLoading} 
+          <Show
+            when={!store.state.results.isLoading}
             fallback={<SkeletonListResult />}
           >
             <For
@@ -31,7 +31,7 @@ const ListResults = () => {
                 <div class="flex py-1 text-lg">
                   <div class="basis-1/3 flex justify-center">
                     <a
-                      href={`https://algoexplorer.io/block/${item?.round}`}
+                      href={`https://allo.info/block/${item?.round}`}
                       target="_blank"
                       class="underline"
                     >

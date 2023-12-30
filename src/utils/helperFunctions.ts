@@ -101,13 +101,13 @@ export const getGovernanceList = () => {
   const [year, month, day] = getSplitDates(currentGovDate);
 
   let firtGovPeriod = 1; // takes into consideration Oct - Dec of 2021
-  const yearsActive = year - (parseInt(initGovYear) + 1);
+  const yearsActive = year - (parseInt(initGovYear) + 1); // get num years governance has been running
 
   // Get the number of quarters that have currently happened in the current year
   const quartersThisYear = Math.ceil((month / 12) * 4);
 
   // Add up the years and current months
-  const govPeriods = firtGovPeriod + yearsActive * 4 + quartersThisYear;
+  const govPeriods = firtGovPeriod + (yearsActive * 4) + quartersThisYear;
   const govPeriodList = [];
   let changeOverYear = parseInt(initGovYear);
 
