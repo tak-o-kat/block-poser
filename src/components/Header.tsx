@@ -1,6 +1,6 @@
-import ThemeSwitcher from './ThemeSwitcher';
-import PoserIcon from './PoserIcon';
-import AlgorandLogo from './AlgorandLogo';
+import ThemeSwitcher from "./ThemeSwitcher";
+import PoserIcon from "./PoserIcon";
+import AlgorandLogo from "./AlgorandLogo";
 
 const Header = () => {
   return (
@@ -12,14 +12,14 @@ const Header = () => {
         <div class="flex flex-grow flex-shrink justify-center px-2">
           <div class="flex items-center font-semibold text-3xl">
             <PoserIcon />
-            <span class="">Posr<span class="text-xs text-teal-600">v0.9</span></span>
+            <span class="">Blocki</span>
           </div>
         </div>
         <div class="flex flex-grow flex-shrink justify-end text-right">
           <ThemeSwitcher />
         </div>
       </div>
-  </header>
+    </header>
   );
 };
 
