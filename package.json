@@ -19,10 +19,13 @@
     "vite-plugin-solid": "^2.7.2"
   },
   "dependencies": {
+    "@mbarzda/solid-i18next": "^1.4.1",
     "@rnwonder/solid-date-picker": "^0.8.0",
     "algosdk": "^2.7.0",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
+    "i18next": "^23.8.2",
+    "i18next-http-backend": "^2.4.3",
     "solid-js": "^1.8.4"
   }
 }

@@ -4,7 +4,7 @@ const initializeTheme = () => {
   let theme: string;
   if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
     theme = localStorage.getItem("theme") as "light" | "dark";
-  } else if (localStorage.getItem('theme') === null) {
+  } else if (localStorage.getItem("theme") === null) {
     theme = "light";
   } else {
     theme = "light";
@@ -18,16 +18,19 @@ const ThemeSwitcher = () => {
   const switchTheme = () => {
     setIsDark(!isDark());
     localStorage.setItem("theme", isDark() ? "dark" : "light");
-    document.body.classList.toggle('dark');
+    document.body.classList.toggle("dark");
   };
-  
+
   // Check local storage for saved theme settings
   onMount(() => {
-    if (isDark()) document.body.classList.toggle('dark');
+    if (isDark()) document.body.classList.toggle("dark");
   });
 
   return (
-    <div class="cursor-pointer text-teal-600" onClick={() => switchTheme()}>
+    <div
+      class="cursor-pointer text-teal-600 flex items-center justify-center"
+      onClick={() => switchTheme()}
+    >
       <Show when={isDark()}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
