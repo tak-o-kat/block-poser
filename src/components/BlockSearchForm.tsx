@@ -1,5 +1,6 @@
 import { createSignal, onMount } from "solid-js";
 import { PickerValue, TimeValue } from "@rnwonder/solid-date-picker";
+import { useTransContext } from "@mbarzda/solid-i18next";
 
 import NodeAddress from "./NodeAddress";
 import SelectPreset from "./SelectPreset";
@@ -62,6 +63,7 @@ export type FormState = {
 
 const BlockSearchForm = () => {
   const store: any = useGlobalContext();
+  const [t] = useTransContext();
   const currentTimeText = "Current Time";
   const gmtDate = new Date().toISOString().slice(0, 10);
   const [year, month, day] = gmtDate.split("-").map((n) => parseInt(n));
@@ -151,7 +153,7 @@ const BlockSearchForm = () => {
     });
 
     // Check if any field has errors
-    if (!(await errorsDetected(formState, setFormState))) {
+    if (!(await errorsDetected(formState, setFormState, t))) {
       // Save form state for the local to support Brave refreshing the page
       saveLocalData(formState.fields);
 

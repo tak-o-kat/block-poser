@@ -3,5 +3,38 @@
   "spanish_label": "Español",
   "japanese_label": "日本語",
   "app_name": "Bloque",
-  "fields": "yes"
+  "form_fields": {
+    "presets": {
+      "last24": "",
+      "last7": "",
+      "last30": "",
+      "last_year": "",
+      "genesis": "",
+      "governance": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": ""
+      },
+      "placeholders": {
+        "address": "ノード・アドレス",
+        "start_date_placeholder": "日付を選択",
+        "end_date_placeholder": "終了日",
+        "start_time_placeholder": "時間を選択",
+        "end_time_placeholder": "時間を選択"
+      },
+      "note": "",
+      "start_date_time": "",
+      "end_date_time": "",
+      "get_last_10": "",
+      "search_button": ""
+    }
+  },
+  "form_errors": {
+    "address": "",
+    "start_date": {},
+    "end_date": {},
+    "start_time": {},
+    "end_time": {}
+  }
 }

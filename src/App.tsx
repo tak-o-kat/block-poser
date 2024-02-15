@@ -1,6 +1,13 @@
-import { createSignal, createEffect, Show, type Component } from "solid-js";
+import {
+  createSignal,
+  createEffect,
+  Show,
+  type Component,
+  onMount,
+} from "solid-js";
 import i18next from "i18next";
-import Backend from "i18next-http-backend";
+import HttpBackend from "i18next-http-backend";
+import { getI18NextConfig } from "./utils/helperFunctions";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -12,29 +19,11 @@ const App: Component = () => {
   const [isReady, setIsReady] = createSignal(false);
 
   createEffect(() => {
-    createEffect(() => {
-      i18next
-        .use(Backend)
-        .init({
-          lng: `en-US`,
-          debug: true,
-          interpolation: {
-            escapeValue: true,
-          },
-          fallbackLng: "en-US",
-          // The default namespace to load when none
-          // are specified explicitly.
-          // "translation" is the default value here,
-          // so we can can remove the `ns` option here
-          // entirely if we wanted.
-          ns: "translation",
-          backend: {
-            loadPath: "/locales/{{lng}}/{{ns}}.json",
-          },
-        })
-        .then(() => setIsReady(true))
-        .catch((err) => console.error(err));
-    });
+    i18next
+      .use(HttpBackend)
+      .init(getI18NextConfig())
+      .then(() => setIsReady(true))
+      .catch((err) => console.error(err));
   });
 
   return (

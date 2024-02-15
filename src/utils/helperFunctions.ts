@@ -1,4 +1,3 @@
-
 // helper function to convert 12 hour time to 24 hour time
 export const convertTime12to24 = (time12h: string) => {
   const [time, modifier] = time12h.split(" ");
@@ -68,11 +67,11 @@ const getGovDate = () => {
   // Need to make a check on 12-31 @ 16:00 GMT (8 hour window) time to see if the new year has happened
   let [year, month, day] = getSplitDates(date);
   if (month === 12 && day === 31 && hour >= 16) {
-    date = `${++year}-${'01'}-${'01'}`;
+    date = `${++year}-${"01"}-${"01"}`;
   }
 
   return date;
-}
+};
 
 // This function will generate all the governance periods from the inital governance date
 export const getGovernanceList = () => {
@@ -107,16 +106,15 @@ export const getGovernanceList = () => {
   const quartersThisYear = Math.ceil((month / 12) * 4);
 
   // Add up the years and current months
-  const govPeriods = firtGovPeriod + (yearsActive * 4) + quartersThisYear;
+  const govPeriods = firtGovPeriod + yearsActive * 4 + quartersThisYear;
   const govPeriodList = [];
   let changeOverYear = parseInt(initGovYear);
 
   // generate a list of all the governance periods starting with the initial year
   for (let i = 0; i < govPeriods; i++) {
-   
     // make an index using modulus to cycle through GOV_YEARLY_CHANGE_OVER_LIST
     let changeOverIndex = i % 4;
-    
+
     // determine the year based on GOV_YEARLY_CHANGE_OVER_LIST
     changeOverYear =
       changeOverIndex === 1 ? changeOverYear + 1 : changeOverYear;
@@ -134,4 +132,36 @@ export const getGovernanceList = () => {
     govPeriodList: govPeriodList.slice(-4),
   };
   return govPeriodObject;
+};
+
+// add language to local storage
+export const saveLanguage = (lang: string) => {
+  localStorage.setItem("lang", lang);
+};
+
+export const getLanguage = () => {
+  return localStorage.getItem("lang");
+};
+
+// function used to get the object to initialize i18next
+export const getI18NextConfig = () => {
+  // check and see if local storage has a default set
+  const resp = getLanguage();
+  const lang = resp === null ? "en-US" : resp;
+
+  // save default lang
+  saveLanguage(lang);
+
+  return {
+    lng: lang,
+    debug: false,
+    interpolation: {
+      escapeValue: true,
+    },
+    fallbackLng: "en-US",
+    ns: "translation",
+    backend: {
+      loadPath: "/locales/{{lng}}/{{ns}}.json",
+    },
+  };
 };

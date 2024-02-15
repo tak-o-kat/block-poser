@@ -16,11 +16,11 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 
 render(
   () => (
-    <TransProvider>
-      <GlobalContextProvider>
+    <GlobalContextProvider>
+      <TransProvider>
         <App />
-      </GlobalContextProvider>
-    </TransProvider>
+      </TransProvider>
+    </GlobalContextProvider>
   ),
   root!
 );
