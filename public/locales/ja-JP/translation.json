@@ -4,40 +4,48 @@
   "japanese_label": "日本語",
   "app_name": "ブロックキ",
   "form_fields": {
+    "node_address": "ノードアドレスまたはNFD",
     "presets": {
-      "last24": "",
-      "last7": "",
-      "last30": "",
-      "last_year": "",
-      "genesis": "",
-      "governance": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": ""
-      },
-      "placeholders": {
-        "address": "ノード・アドレス",
-        "start_date_placeholder": "日付を選択",
-        "end_date_placeholder": "終了日",
-        "start_time_placeholder": "時間を選択",
-        "end_time_placeholder": "時間を選択"
-      },
-      "note": "",
-      "start_date_time": "",
-      "end_date_time": "",
-      "get_last_10": "",
-      "search_button": ""
-    }
+      "manual": "手動",
+      "last24": "過去24時間",
+      "last7": "過去7日間",
+      "last30": "過去30日間",
+      "last_year": "昨年",
+      "genesis": "発端",
+      "governance": "ガバナンス"
+    },
+    "placeholders": {
+      "address": "ノードアドレスまたはNFD",
+      "start_date": "日付を選択",
+      "end_date": "終了日",
+      "start_time": "時間を選択",
+      "end_time": "現在時刻"
+    },
+    "note1": "注",
+    "note2": ": 日時はすべてグリニッジ標準時",
+    "start_date_time": "開始日時",
+    "end_date_time": "終了日時",
+    "get_last_10": "最後の10ブロックを取得",
+    "search_button": "検索",
+    "searching_button": "探索中"
   },
   "form_errors": {
     "address": {
-      "empty": "",
+      "empty": "住所が必要です",
       "invalid": "無効住所"
     },
-    "start_date": {},
+    "start_date": {
+      "required": "開始日が必要",
+      "start_date_after": "終了日後の開始日"
+    },
     "end_date": {},
-    "start_time": {},
-    "end_time": {}
+    "start_time": {
+      "required": "開始時間が必要",
+      "start_time_after": "終了時刻後の開始時刻",
+      "start_time_improper": "開始時刻フィールドの書式が不適切"
+    },
+    "end_time": {
+      "end_time_improper": "終了時刻フィールドの書式が不適切"
+    }
   }
 }

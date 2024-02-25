@@ -31,7 +31,7 @@ const checkAccountAddress = (
 ): boolean => {
   let emptyFieldError = false;
   let invalidAddressError = false;
-  const emptyFieldMsg = "Node address required!";
+  const emptyFieldMsg = t("form_errors.address.empty"); // "Node address required!";
   const invalidAddressMsg = t("form_errors.address.invalid"); //"Invalid account address or NFD!";
   const attributeName = "accountAddress";
 
@@ -59,7 +59,11 @@ const checkAccountAddress = (
   return emptyFieldError || invalidAddressError;
 };
 
-const checkDateTime = (state: any, setState: any) => {
+const checkDateTime = (
+  state: any,
+  setState: any,
+  t: TFunction<"translation", undefined>
+) => {
   let startDateFieldError = false;
   let startTimeFieldError = false;
   let startTimeFormatError = false;
@@ -69,21 +73,20 @@ const checkDateTime = (state: any, setState: any) => {
   let endDate = state.fields.endDate;
   let endTime = state.fields.endTime;
 
-  const emptyStartDateMsg = "Start date is required!";
-  const emptyStartTimeMsg = "Start time is required!";
-  const startDateAfterEndDateMsg = "Start date after end date!";
-  const startTimeAfterEndTimeMsg = "Start time after End Time";
+  const emptyStartDateMsg = t("form_errors.start_date.required"); //"Start date is required!";
+  const emptyStartTimeMsg = t("form_errors.start_time.required"); //"Start time is required!";
+  const startDateAfterEndDateMsg = t("form_errors.start_date.start_date_after"); //"Start date after end date!";
+  const startTimeAfterEndTimeMsg = t("form_errors.start_time.start_time_after"); //"Start time after End Time";
   const startDateAttributeName = "startDate";
   const startTimeAttributeName = "startTime";
   const endDateAttributeName = "endDate";
   const endTimeAttributeName = "endTime";
-  const startTimeFormatErrMsg = "Start time field is improperly formatted";
-  const endTimeFormatErrMsg = "End time field is improperly formatted";
+  const startTimeFormatErrMsg = t("form_errors.start_time.start_time_improper"); //"Start time field is improperly formatted";
+  const endTimeFormatErrMsg = t("form_errors.end_time.end_time_improper"); //"End time field is improperly formatted";
   let dateField = {};
   let timeField = {};
 
   let runningBoolean = false;
-
   // *** check if start date and time fields are empty, we dont ahve to worry about
   // end date and time fields because defaults are provided
   startDateFieldError = state.fields.startDate === "";
@@ -214,7 +217,6 @@ export const errorsDetected = async (
 
   let nfdError = false;
   let addressError = false;
-
   try {
     // First do a soft check on the nfd, if it passes make a request to the NFD endpoint to validate.
     nfdError = nfdSoftCheck && !(await isValidNFD(state, setState));
@@ -235,6 +237,6 @@ export const errorsDetected = async (
     addressError = checkAccountAddress(state, setState, t);
   }
 
-  const dateTimeError = checkDateTime(state, setState);
+  const dateTimeError = checkDateTime(state, setState, t);
   return nfdError || addressError || dateTimeError;
 };

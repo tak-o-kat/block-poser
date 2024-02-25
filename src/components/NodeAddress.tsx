@@ -1,6 +1,7 @@
-import { Show } from 'solid-js';
+import { Show } from "solid-js";
 import { SetStoreFunction } from "solid-js/store";
-import { FormState } from './BlockSearchForm';
+import { FormState } from "./BlockSearchForm";
+import { useTransContext } from "@mbarzda/solid-i18next";
 
 type NodeAddressProps = {
   state: FormState;
@@ -8,15 +9,16 @@ type NodeAddressProps = {
 };
 
 const NodeAddress = (props: NodeAddressProps) => {
+  const [t] = useTransContext();
   const updateState = (address: string) => {
-    props.setState({ 
+    props.setState({
       fields: {
         ...props.state.fields,
         accountAddress: address,
-      }
+      },
     });
   };
-  
+
   return (
     <div class="">
       <label class="sr-only text-md">Node Address</label>
@@ -25,12 +27,18 @@ const NodeAddress = (props: NodeAddressProps) => {
         onChange={(e) => updateState(e.currentTarget.value)}
         type="text"
         name="AccountAddress"
-        class={`${props.state.errors.accountAddress.error ? 'border-red-500 dark:border-red-500' : ''} h=[3rem] bg-white dark:bg-gray-700 disabled:opacity-100 border w-full rounded-lg p-3 pe-12 border-gray-300 dark:border-gray-600 outline-none`}
-        placeholder="Node Address or NFD"
+        class={`${
+          props.state.errors.accountAddress.error
+            ? "border-red-500 dark:border-red-500"
+            : ""
+        } h=[3rem] bg-white dark:bg-gray-700 disabled:opacity-100 border w-full rounded-lg p-3 pe-12 border-gray-300 dark:border-gray-600 outline-none`}
+        placeholder={t("form_fields.placeholders.address")}
         maxlength={58}
       />
       <Show when={props.state.errors.accountAddress.error}>
-        <span class="p-1 text-sm text-red-600">{props.state.errors.accountAddress.msg}</span>
+        <span class="p-1 text-sm text-red-600">
+          {props.state.errors.accountAddress.msg}
+        </span>
       </Show>
     </div>
   );

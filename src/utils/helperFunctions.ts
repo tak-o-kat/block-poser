@@ -28,13 +28,13 @@ export const convertTime24to12 = (time24h: string) => {
 // take an iso ordered date and return a date Americans can understand
 export const isoToDisplayDate = (date: string) => {
   const [year, month, day] = date.split("-");
-  return `${month}-${day}-${year}`;
+  return date !== "" ? `${month}-${day}-${year}` : "";
 };
 
 // converts a display date to an iso ordered date
 export const dateToIsoDate = (date: string) => {
   const [month, day, year] = date.split("-");
-  return `${year}-${month}-${day}`;
+  return date !== "" ? `${year}-${month}-${day}` : "";
 };
 
 export const getSplitDates = (date: string) => {

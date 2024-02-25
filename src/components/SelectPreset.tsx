@@ -2,6 +2,7 @@ import { createSignal, Setter, For } from "solid-js";
 import { SetStoreFunction } from "solid-js/store";
 import { FormState } from "./BlockSearchForm";
 import { DateMath, PickerValue, TimeValue } from "@rnwonder/solid-date-picker";
+import { useTransContext } from "@mbarzda/solid-i18next";
 import {
   convertTime24to12,
   getGovernanceList,
@@ -18,22 +19,30 @@ type SelectProps = {
   setState: SetStoreFunction<FormState>;
 };
 
-const SelectPreset= (props: SelectProps) => {
-  const [selection, setSelection] = createSignal('');
+const SelectPreset = (props: SelectProps) => {
+  const [t] = useTransContext();
+  const [selection, setSelection] = createSignal("");
 
   // Generate dynamic governance preset list
   const govPeriodObject = getGovernanceList();
   const govPeriodSize = govPeriodObject.govPeriodList.length;
 
-
   // Function to convert preset into all four date and time entries
   const updateFields = (value: string) => {
     setSelection(value);
     const currentDate = new Date().toISOString().slice(0, 10);
-    const [currentDateYear, currentDateMonth, currentDateDay] = currentDate.split('-').map(n => parseInt(n));
-    const currentDateObj = { year: currentDateYear, month: currentDateMonth - 1, day: currentDateDay };
-    const currentTime = convertTime24to12(new Date().toISOString().slice(11,19));
-    const gmt8plus = '16:00:00';
+    const [currentDateYear, currentDateMonth, currentDateDay] = currentDate
+      .split("-")
+      .map((n) => parseInt(n));
+    const currentDateObj = {
+      year: currentDateYear,
+      month: currentDateMonth - 1,
+      day: currentDateDay,
+    };
+    const currentTime = convertTime24to12(
+      new Date().toISOString().slice(11, 19)
+    );
+    const gmt8plus = "16:00:00";
     let dateTimeValues: any = [];
 
     const dateSubtraction = (numType: number, type: string) => {
@@ -41,11 +50,18 @@ const SelectPreset= (props: SelectProps) => {
         startTime: currentTime,
         endTime: currentTime,
         endDate: currentDate,
-        startDate: DateMath.set(currentDateObj).minus({ [type]: numType }).toString({ format: "yyyy-mm-dd" })
+        startDate: DateMath.set(currentDateObj)
+          .minus({ [type]: numType })
+          .toString({ format: "yyyy-mm-dd" }),
       });
     };
 
-    const dateSet = (startDate: string, startTime: string, endDate: string, endTime: string) => {
+    const dateSet = (
+      startDate: string,
+      startTime: string,
+      endDate: string,
+      endTime: string
+    ) => {
       return Object.create({
         startDate: startDate,
         startTime: startTime,
@@ -59,8 +75,8 @@ const SelectPreset= (props: SelectProps) => {
       ...props.state,
       fields: {
         ...props.state.fields,
-        presetType: value
-      }
+        presetType: value,
+      },
     });
     // Generate all four datetime fields depeneding on the preset selected
     switch (selection()) {
@@ -139,78 +155,86 @@ const SelectPreset= (props: SelectProps) => {
           endDate: currentDate,
           startDate: "",
         });
-    };
+    }
 
     // Block the access to the datetime fields unless user selects custom
     props.setState({
       ...props.state,
       fields: {
         ...props.state.fields,
-        preset: selection() === '' ? false : true
-      }
+        preset: selection() === "" ? false : true,
+      },
     });
 
     // Set the start and end datetimes
     let [year, month, day] = getSplitDates(dateTimeValues.startDate);
     props.setStartDate({
-      label: dateTimeValues.startDate ? isoToDisplayDate(dateTimeValues.startDate) : "",
-      value: !year && !month && !day ? {}: {
-        selectedDateObject: {
-          year: year,
-          month: month - 1,
-          day: day,
-        },
-      },
+      label: dateTimeValues.startDate
+        ? isoToDisplayDate(dateTimeValues.startDate)
+        : "",
+      value:
+        !year && !month && !day
+          ? {}
+          : {
+              selectedDateObject: {
+                year: year,
+                month: month - 1,
+                day: day,
+              },
+            },
     });
-    
+
     let [hour, minute, second] = getSplitDates(dateTimeValues.startTime);
     props.setStartTime({
       label: dateTimeValues.startTime,
-      value: !hour && !minute && !second ? {} : {
-        hour: hour, 
-        minute: minute, 
-        second: second,
-      }
+      value:
+        !hour && !minute && !second
+          ? {}
+          : {
+              hour: hour,
+              minute: minute,
+              second: second,
+            },
     });
 
     [year, month, day] = getSplitDates(dateTimeValues.endDate);
     props.setEndDate({
       label: isoToDisplayDate(dateTimeValues.endDate),
       value: {
-        selectedDateObject: {year: year, month: month - 1 , day: day}
-      }
+        selectedDateObject: { year: year, month: month - 1, day: day },
+      },
     });
 
     [hour, minute, second] = getSplitDates(dateTimeValues.endTime);
     props.setEndTime({
       label: dateTimeValues.endTime,
-      value: {hour: hour, minute: minute, second: second}
+      value: { hour: hour, minute: minute, second: second },
     });
   };
 
-  
   return (
-    <div class="h-[3rem] border border-gray-300 dark:border-gray-600 rounded-lg">
+    <div class="h-[3rem] border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
       <select
         id="Select-Preset"
         value={selection()}
         onChange={(e) => updateFields(e.currentTarget.value)}
         aria-placeholder="Select Preset"
-        class={`rounded-lg bg-white dark:bg-gray-700 disabled:bg-white disabled:opacity-100 h-full w-full border-1 pl-2 outline-0 border-r-8 border-r-white dark:border-r-gray-700`}>
-        <option selected value=''>Custom (Presets)</option>
-        <option value="last24hours">Last 24 hours</option>
-        <option value="last7days">Last 7 days</option>
-        <option value="last30days">Last 30 days</option>
-        <option value="lastyear">Last year</option>
-        <option value="genesis">Genesis</option>
-        <For 
-          each={govPeriodObject.govPeriodList}
-        >
+        class={`bg-white dark:bg-gray-700 disabled:bg-white border-r-8 border-r-white h-full w-full pl-2 outline-0 dark:border-r-gray-700`}
+      >
+        <option selected value="">
+          {t("form_fields.presets.manual")}
+        </option>
+        <option value="last24hours">{t("form_fields.presets.last24")}</option>
+        <option value="last7days">{t("form_fields.presets.last7")}</option>
+        <option value="last30days">{t("form_fields.presets.last30")}</option>
+        <option value="lastyear">{t("form_fields.presets.last_year")}</option>
+        <option value="genesis">{t("form_fields.presets.genesis")}</option>
+        <For each={govPeriodObject.govPeriodList}>
           {(_, index) => (
-            <option
-              value={`gov${govPeriodObject.govPeriods - index()}`}
-            >{
-              `Governance ${govPeriodObject.govPeriods - index()}`}
+            <option value={`gov${govPeriodObject.govPeriods - index()}`}>
+              {`${t("form_fields.presets.governance")} ${
+                govPeriodObject.govPeriods - index()
+              }`}
             </option>
           )}
         </For>

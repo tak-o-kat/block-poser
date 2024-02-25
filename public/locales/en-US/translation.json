@@ -3,5 +3,49 @@
   "spanish_label": "Español",
   "japanese_label": "日本語",
   "app_name": "Blocki",
-  "fields": "yes"
+  "form_fields": {
+    "node_address": "Node Address or NFD",
+    "presets": {
+      "manual": "Manual (Presets)",
+      "last24": "Last 24 hours",
+      "last7": "Last 7 days",
+      "last30": "Last 30 days",
+      "last_year": "Last year",
+      "genesis": "Genesis",
+      "governance": "Governance"
+    },
+    "placeholders": {
+      "address": "Node Address or NFD",
+      "start_date": "Select Date",
+      "end_date": "Select Date",
+      "start_time": "Select Time",
+      "end_time": "Current Time"
+    },
+    "note1": "Note",
+    "note2": ": All dates and times reflect GMT",
+    "start_date_time": "Start Date & Time",
+    "end_date_time": "End Date & Time",
+    "get_last_10": "Get the last 10 blocks proposed!",
+    "search_button": "Search",
+    "searching_button": "Searching"
+  },
+  "form_errors": {
+    "address": {
+      "empty": "Address required!",
+      "invalid": "Invalid address or NFD"
+    },
+    "start_date": {
+      "required": "Start date is required!",
+      "start_date_after": "Start date after end date!"
+    },
+    "end_date": {},
+    "start_time": {
+      "required": "Start time is required!",
+      "start_time_after": "Start time after End time!",
+      "start_time_improper": "Start time field is improperly formatted!"
+    },
+    "end_time": {
+      "end_time_improper": "End time field is improperly formatted!"
+    }
+  }
 }

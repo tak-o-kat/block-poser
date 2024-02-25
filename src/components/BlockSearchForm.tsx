@@ -1,4 +1,4 @@
-import { createSignal, onMount } from "solid-js";
+import { createEffect, createSignal, onMount } from "solid-js";
 import { PickerValue, TimeValue } from "@rnwonder/solid-date-picker";
 import { useTransContext } from "@mbarzda/solid-i18next";
 
@@ -8,7 +8,7 @@ import SolidDatePicker from "./SolidDatePicker";
 import SolidTimePicker from "./SolidTimePicker";
 import Toggle from "./Toggle";
 
-import { useGlobalContext, GlobalStore } from "../context/store";
+import { useGlobalContext } from "../context/store";
 import { graphqlClient } from "../utils/graphqlClient";
 import { getBlocksProposed, getBlocksList } from "../utils/graphqlQueries";
 import { errorsDetected } from "../utils/validation";
@@ -64,7 +64,7 @@ export type FormState = {
 const BlockSearchForm = () => {
   const store: any = useGlobalContext();
   const [t] = useTransContext();
-  const currentTimeText = "Current Time";
+  const currentTimeText = t("form_fields.placeholders.end_time");
   const gmtDate = new Date().toISOString().slice(0, 10);
   const [year, month, day] = gmtDate.split("-").map((n) => parseInt(n));
   const [searching, setSearching] = createSignal(false);
@@ -85,7 +85,7 @@ const BlockSearchForm = () => {
     },
   });
   const [endTime, setEndTime] = createSignal<TimeValue>({
-    label: currentTimeText,
+    label: "",
     value: { hour: 0, minute: 0, second: 0 },
   });
 
@@ -136,7 +136,6 @@ const BlockSearchForm = () => {
       const selectElement = document.getElementById("Select-Preset");
       selectElement.dispatchEvent(new Event("change"));
     }
-
     // set date and time values into the form state
     setFormState({
       ...formState,
@@ -221,6 +220,14 @@ const BlockSearchForm = () => {
     setSearching(false);
   };
 
+  // Used to update end time
+  createEffect(() => {
+    setEndTime({
+      label: t("form_fields.placeholders.end_time"),
+      value: { hour: 0, minute: 0, second: 0 },
+    });
+  });
+
   onMount(() => {
     // check to see if a navigation of type back_forward was triggered
     const entry = window.performance.getEntriesByType(
@@ -296,8 +303,8 @@ const BlockSearchForm = () => {
               setState={setFormState}
             />
             <div class="flex justify-center text-sm">
-              <span class="font-semibold">Note</span>: All dates and times
-              reflect GMT
+              <span class="font-semibold">{t("form_fields.note1")}</span>
+              {t("form_fields.note2")}
             </div>
             <fieldset
               disabled={formState.fields.preset}
@@ -305,7 +312,9 @@ const BlockSearchForm = () => {
                 formState.fields.preset && "opacity-60"
               } mx-auto mb-0 mt-4 sm:mt-8 space-y-4`}
             >
-              <h4 class="flex justify-center">Start Date & Time</h4>
+              <h4 class="flex justify-center">
+                {t("form_fields.start_date_time")}
+              </h4>
               <div class="flex flex-row gap-4 h-[3rem]">
                 <SolidDatePicker
                   state={startDate}
@@ -326,7 +335,7 @@ const BlockSearchForm = () => {
                     : ""
                 }`}
               >
-                End Date & Time
+                {t("form_fields.end_date_time")}
               </h4>
               <div class="flex flex-row gap-4 h-[3rem]">
                 <SolidDatePicker
@@ -343,7 +352,7 @@ const BlockSearchForm = () => {
             </fieldset>
             <div class="flex flex-row items-center">
               <Toggle state={formState} setState={setFormState} />
-              <span class="px-3">Get the last 10 blocks proposed!</span>
+              <span class="px-3">{t("form_fields.get_last_10")}</span>
             </div>
 
             <div class="flex items-center justify-between">
@@ -356,7 +365,9 @@ const BlockSearchForm = () => {
                 } inline-block w-full rounded-lg !bg-blue-400 dark:!bg-blue-500 
                 px-5 py-3 font-medium text-white sm:w-[12rem]`}
               >
-                {searching() ? "Seaching..." : "Search"}
+                {searching()
+                  ? t("form_fields.searching_button")
+                  : t("form_fields.search_button")}
               </button>
             </div>
           </fieldset>
