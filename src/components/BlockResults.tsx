@@ -1,9 +1,11 @@
 import { Show } from "solid-js";
 import { useGlobalContext } from "../context/store";
 import { SkeletonBlockResult } from "./SkeletonLoaders";
+import { useTransContext } from "@mbarzda/solid-i18next";
 
 const BlockResults = () => {
   const store: any = useGlobalContext();
+  const [t] = useTransContext();
 
   return (
     <section class="mx-auto w-full p-4 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-100">
@@ -33,10 +35,14 @@ const BlockResults = () => {
                 </div>
               </Show>
               <div class="  overflow-auto">
-                {`Status: ${store.state.results.status}`}
+                {`${t("results.status")}: ${store.state.results.status}`}
               </div>
-              <div class="">{`From: ${store.state.results.startDateTime}`}</div>
-              <div class="">{`To: ${store.state.results.endDateTime}`}</div>
+              <div class="">{`${t("results.from")}: ${
+                store.state.results.startDateTime
+              }`}</div>
+              <div class="">{`${t("results.to")}: ${
+                store.state.results.endDateTime
+              }`}</div>
             </div>
           </div>
         </div>

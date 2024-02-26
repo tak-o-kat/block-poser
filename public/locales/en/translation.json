@@ -4,7 +4,6 @@
   "japanese_label": "日本語",
   "app_name": "Blocki",
   "form_fields": {
-    "node_address": "Node Address or NFD",
     "presets": {
       "manual": "Manual (Presets)",
       "last24": "Last 24 hours",
@@ -47,5 +46,11 @@
     "end_time": {
       "end_time_improper": "End time field is improperly formatted!"
     }
+  },
+  "results": {
+    "blocks": "blocks",
+    "status": "Status",
+    "from": "From",
+    "to": "To"
   }
 }

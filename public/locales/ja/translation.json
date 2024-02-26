@@ -4,7 +4,6 @@
   "japanese_label": "日本語",
   "app_name": "ブロックキ",
   "form_fields": {
-    "node_address": "ノードアドレスまたはNFD",
     "presets": {
       "manual": "手動",
       "last24": "過去24時間",
@@ -47,5 +46,11 @@
     "end_time": {
       "end_time_improper": "終了時刻フィールドの書式が不適切"
     }
+  },
+  "results": {
+    "blocks": "blocks",
+    "status": "身分",
+    "from": "から",
+    "to": "まで"
   }
 }
