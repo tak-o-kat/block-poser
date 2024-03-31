@@ -60,7 +60,6 @@ export const deleteLocalData = () => {
 
 // function to get the current governance period date, based on Singapore time
 const getGovDate = () => {
-  debugger;
   const currentDate = new Date();
   let date = currentDate.toISOString().slice(0, 10);
   const hour = parseInt(currentDate.toISOString().slice(11, 13));
@@ -116,7 +115,6 @@ export const getGovernanceList = () => {
   const govPeriodList = [];
   let changeOverYear = parseInt(initGovYear);
 
-  debugger;
   // generate a list of all the governance periods starting with the initial year
   for (let i = 0; i < govPeriods; i++) {
     // make an index using modulus to cycle through GOV_YEARLY_CHANGE_OVER_LIST

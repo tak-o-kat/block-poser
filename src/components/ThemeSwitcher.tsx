@@ -3,8 +3,8 @@ import { createSignal, Show, onMount } from "solid-js";
 const initializeTheme = () => {
   let theme: string;
   if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-    theme = localStorage.getItem("theme") as "light" | "dark";
-  } else if (localStorage.getItem("theme") === null) {
+    theme = localStorage.getItem("blockiTheme") as "light" | "dark";
+  } else if (localStorage.getItem("blockiTheme") === null) {
     theme = "light";
   } else {
     theme = "light";
@@ -17,7 +17,7 @@ const ThemeSwitcher = () => {
 
   const switchTheme = () => {
     setIsDark(!isDark());
-    localStorage.setItem("theme", isDark() ? "dark" : "light");
+    localStorage.setItem("blockiTheme", isDark() ? "dark" : "light");
     document.body.classList.toggle("dark");
   };
 
