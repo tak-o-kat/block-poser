@@ -2,8 +2,11 @@ import { createSignal, Show, onMount } from "solid-js";
 
 const initializeTheme = () => {
   let theme: string;
-  if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-    theme = localStorage.getItem("blockiTheme") as "light" | "dark";
+  if (
+    typeof localStorage !== "undefined" &&
+    localStorage.getItem("blockiTheme")
+  ) {
+    theme = localStorage.getItem("blockiTheme");
   } else if (localStorage.getItem("blockiTheme") === null) {
     theme = "light";
   } else {
