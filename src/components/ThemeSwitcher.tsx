@@ -6,7 +6,7 @@ const initializeTheme = () => {
     typeof localStorage !== "undefined" &&
     localStorage.getItem("blockiTheme")
   ) {
-    theme = localStorage.getItem("blockiTheme");
+    theme = localStorage.getItem("blockiTheme") as "light" | "dark";
   } else if (localStorage.getItem("blockiTheme") === null) {
     theme = "light";
   } else {
