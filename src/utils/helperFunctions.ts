@@ -96,7 +96,7 @@ export const getGovernanceList = () => {
     },
     {
       start: "-06-30",
-      end: "-09-31",
+      end: "-09-30",
     },
   ];
 
