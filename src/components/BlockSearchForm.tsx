@@ -6,11 +6,16 @@ import NodeAddress from "./NodeAddress";
 import SelectPreset from "./SelectPreset";
 import SolidDatePicker from "./SolidDatePicker";
 import SolidTimePicker from "./SolidTimePicker";
-import Toggle from "./Toggle";
+import { ListToggle, RewardsToggle } from "./Toggle";
 
 import { useGlobalContext } from "../context/store";
 import { graphqlClient } from "../utils/graphqlClient";
-import { getBlocksProposed, getBlocksList } from "../utils/graphqlQueries";
+import {
+  getBlocksProposed,
+  getBlocksProposedWithRewards,
+  getBlocksList,
+  getBlocksListWithRewards,
+} from "../utils/graphqlQueries";
 import { errorsDetected } from "../utils/validation";
 import { createStore } from "solid-js/store";
 import {
@@ -36,6 +41,7 @@ export type FormState = {
     endDate: string;
     endTime: string;
     getList: boolean;
+    getRewards: boolean;
   };
   errors: {
     accountAddress: {
@@ -102,6 +108,7 @@ const BlockSearchForm = () => {
       endDate: "",
       endTime: "",
       getList: false,
+      getRewards: false,
     },
     errors: {
       accountAddress: {
@@ -162,6 +169,7 @@ const BlockSearchForm = () => {
           ...store.state.results,
           isLoading: true,
           getList: formState.fields.getList,
+          getRewards: formState.fields.getRewards,
         },
       });
 
@@ -184,10 +192,51 @@ const BlockSearchForm = () => {
         );
         const accountInfo: any = await accountResp.json();
 
-        // if blocks proposed list is needed, we can make one call to the endpoint to get the block count and block list
-        const blocksResp: any = await (formState.fields.getList
-          ? graphqlClient.request(getBlocksList, vars)
-          : graphqlClient.request(getBlocksProposed, vars));
+        // Determine the call we need to make to the graphql endpoint
+        let queryType = "";
+        if (formState.fields.getRewards && !formState.fields.getList) {
+          queryType = "GET_REWARDS_ONLY";
+        } else if (!formState.fields.getRewards && formState.fields.getList) {
+          queryType = "GET_LIST_ONLY";
+        } else if (formState.fields.getRewards && formState.fields.getList) {
+          queryType = "GET_LIST_AND_REWARDS";
+        } else {
+          queryType = "GET_TOTALS_ONLY";
+        }
+
+        let endPointType = "";
+        switch (queryType) {
+          case "GET_REWARDS_ONLY":
+            endPointType = getBlocksProposedWithRewards;
+            break;
+          case "GET_LIST_ONLY":
+            endPointType = getBlocksList;
+            break;
+          case "GET_LIST_AND_REWARDS":
+            endPointType = getBlocksListWithRewards;
+            break;
+          case "GET_TOTALS_ONLY":
+            endPointType = getBlocksProposed;
+            break;
+          default:
+            endPointType = getBlocksProposed;
+            break;
+        }
+
+        const blocksResp: any = await graphqlClient.request(endPointType, vars);
+
+        // Loop through the header to grab all the payouts to the blocks the account proposed
+        let blockRewards: bigint = 0n;
+        if (
+          queryType === "GET_REWARDS_ONLY" ||
+          queryType === "GET_LIST_AND_REWARDS"
+        ) {
+          for (let i = 0; i < blocksResp.blocks.nodes.length; i++) {
+            if (blocksResp.blocks.nodes[i].header?.pp) {
+              blockRewards += BigInt(blocksResp.blocks.nodes[i].header.pp);
+            }
+          }
+        }
 
         // set all the response data into the global context to display the results
         store.setState({
@@ -207,6 +256,8 @@ const BlockSearchForm = () => {
             blocksProposed: `${blocksResp.blocks.totalCount}`,
             hasResults: true,
             getList: formState.fields.getList,
+            getRewards: formState.fields.getRewards,
+            rewards: blockRewards,
             blockList: blocksResp?.blocks?.nodes || [],
             isLoading: false,
           },
@@ -351,7 +402,12 @@ const BlockSearchForm = () => {
               </div>
             </fieldset>
             <div class="flex flex-row items-center">
-              <Toggle state={formState} setState={setFormState} />
+              <RewardsToggle state={formState} setState={setFormState} />
+              <span class="px-3">{t("form_fields.get_rewards")}</span>
+            </div>
+
+            <div class="flex flex-row items-center">
+              <ListToggle state={formState} setState={setFormState} />
               <span class="px-3">{t("form_fields.get_last_10")}</span>
             </div>
 

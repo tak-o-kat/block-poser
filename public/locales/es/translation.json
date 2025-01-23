@@ -24,7 +24,8 @@
     "note2": ": Todas las fechas y horas corresponden a GMT",
     "start_date_time": "Fecha y hora de inicio",
     "end_date_time": "Fecha y hora de finalización",
-    "get_last_10": "¡Que propongan los 10 últimos bloques!",
+    "get_rewards": "Ver Recompensas de Bloques",
+    "get_last_10": "Ver los 10 últimos bloques!",
     "search_button": "Busque",
     "searching_button": "Buscando"
   },
@@ -51,6 +52,7 @@
     "blocks": "block",
     "status": "Estado",
     "from": "Desde",
-    "to": "A"
+    "to": "A",
+    "rewards": "Recompensas"
   }
 }

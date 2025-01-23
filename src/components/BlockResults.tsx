@@ -2,6 +2,7 @@ import { Show } from "solid-js";
 import { useGlobalContext } from "../context/store";
 import { SkeletonBlockResult } from "./SkeletonLoaders";
 import { useTransContext } from "@mbarzda/solid-i18next";
+import AlgorandLogo from "./AlgorandLogo";
 
 const BlockResults = () => {
   const store: any = useGlobalContext();
@@ -43,6 +44,14 @@ const BlockResults = () => {
               <div class="">{`${t("results.to")}: ${
                 store.state.results.endDateTime
               }`}</div>
+              <Show when={store.state.results.getRewards}>
+                <div class="flex flex-row items-center gap-0">
+                  {`${t("results.rewards")}: ${(
+                    Number(store.state.results.rewards) * 10e-7
+                  ).toFixed(7)} `}
+                  <AlgorandLogo size={11} />
+                </div>
+              </Show>
             </div>
           </div>
         </div>

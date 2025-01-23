@@ -24,7 +24,8 @@
     "note2": ": 日時はすべてグリニッジ標準時",
     "start_date_time": "開始日時",
     "end_date_time": "終了日時",
-    "get_last_10": "最後の10ブロックを取得",
+    "get_rewards": "ブロック報酬を獲得する",
+    "get_last_10": "最後の 10 ブロックを表示します",
     "search_button": "検索",
     "searching_button": "探索中"
   },
@@ -51,6 +52,7 @@
     "blocks": "blocks",
     "status": "状態",
     "from": "から",
-    "to": "まで"
+    "to": "まで",
+    "rewards": "報酬"
   }
 }

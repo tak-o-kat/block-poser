@@ -24,7 +24,8 @@
     "note2": ": All dates and times reflect GMT",
     "start_date_time": "Start Date & Time",
     "end_date_time": "End Date & Time",
-    "get_last_10": "Get the last 10 blocks proposed!",
+    "get_rewards": "Show Block Rewards",
+    "get_last_10": "Show the last 10 blocks!",
     "search_button": "Search",
     "searching_button": "Searching"
   },
@@ -51,6 +52,7 @@
     "blocks": "blocks",
     "status": "Status",
     "from": "From",
-    "to": "To"
+    "to": "To",
+    "rewards": "Rewards"
   }
 }

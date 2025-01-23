@@ -1,4 +1,4 @@
-import algonode from "../assets/algo_node.png";
+import algonode from "../assets/nodely_icon.png";
 
 const Footer = () => {
   return (
@@ -6,14 +6,14 @@ const Footer = () => {
       <div class="mx-auto max-w-screen-md flex flex-1 items-center justify-center">
         <div class="flex justify-between">
           <div class="flex justify-end text-teal-600 text-xs">
-            <a 
-              href="https://algonode.io" 
-              target="_blank" 
-              aria-label="Algonode" 
-              class="flex flex-row items-center"
+            <a
+              href="https://nodely.io/"
+              target="_blank"
+              aria-label="Algonode"
+              class="flex flex-row items-center gap-1"
             >
               <img class="h-[1.5rem]" src={algonode} alt="algo_node"></img>
-              <span>powered by Algonode</span>
+              <span>powered by Nodely</span>
             </a>
           </div>
         </div>
