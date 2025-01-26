@@ -48,7 +48,7 @@ const BlockResults = () => {
                 <div class="flex flex-row items-center gap-0">
                   {`${t("results.rewards")}: ${(
                     Number(store.state.results.rewards) * 10e-7
-                  ).toFixed(7)} `}
+                  ).toFixed(4)} `}
                   <AlgorandLogo size={11} />
                 </div>
               </Show>
