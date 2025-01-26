@@ -92,6 +92,16 @@ const SelectPreset = (props: SelectProps) => {
       case "lastyear":
         dateTimeValues = dateSubtraction(1, "year");
         break;
+      case "incentives":
+        const incentivesDate = "2025-01-23";
+        const incentivesTime = "14:14:13";
+        dateTimeValues = dateSet(
+          incentivesDate,
+          incentivesTime,
+          currentDate,
+          currentTime
+        );
+        break;
       case "genesis":
         const genesisDate = "2019-06-11";
         const genesisTime = "00:00:00";
@@ -228,6 +238,9 @@ const SelectPreset = (props: SelectProps) => {
         <option value="last7days">{t("form_fields.presets.last7")}</option>
         <option value="last30days">{t("form_fields.presets.last30")}</option>
         <option value="lastyear">{t("form_fields.presets.last_year")}</option>
+        <option value="incentives">
+          {t("form_fields.presets.incentives")}
+        </option>
         <option value="genesis">{t("form_fields.presets.genesis")}</option>
         <For each={govPeriodObject.govPeriodList}>
           {(_, index) => (
