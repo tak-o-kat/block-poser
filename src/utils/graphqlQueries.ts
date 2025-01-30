@@ -55,7 +55,6 @@ export const getBlocksList = gql`
 export const getBlocksListWithRewards = gql`
   query ($addy: String!, $start: Datetime, $end: Datetime) {
     blocks(
-      first: 10
       condition: { proposerAddr: $addy }
       filter: { realtime: { greaterThan: $start, lessThan: $end } }
       orderBy: REALTIME_DESC

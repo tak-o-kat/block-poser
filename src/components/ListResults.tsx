@@ -35,7 +35,7 @@ const ListResults = () => {
             fallback={<SkeletonListResult />}
           >
             <For
-              each={store.state.results.blockList}
+              each={store.state.results.blockList.slice(0, 10)}
               fallback={
                 <div class="basis-2/3 flex py-2 justify-center">No Blocks</div>
               }
